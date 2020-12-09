@@ -13,18 +13,21 @@ namespace Server.Hotel.Items
 {
     public class ItemRepository : IItemRepository
     {
-        private IDatabaseContext databaseContext;
+        private DatabaseContext databaseContext;
         private IBaseCache<IItem> itemsCache;
         private IHabboProfileRepository habboProfileRepository;
         private IRoomInfoRepository roomInfoRepository;
-        public ItemRepository(IDatabaseContext databaseContext,
+        private IItemDataRepository<IItemData, ushort> itemDataRepository;
+        public ItemRepository(DatabaseContext databaseContext,
                               IHabboProfileRepository habboProfileRepository,
+                              IItemDataRepository<IItemData, ushort> itemDataRepository,
                               IRoomInfoRepository roomInfoRepository,
                               IBaseCache<IItem> itemsCache)
         {
             this.databaseContext = databaseContext;
             this.itemsCache = itemsCache;
             this.habboProfileRepository = habboProfileRepository;
+            this.itemDataRepository = itemDataRepository;
             this.roomInfoRepository = roomInfoRepository;
         }
 
@@ -37,22 +40,25 @@ namespace Server.Hotel.Items
         {
             return await itemsCache.GetOrCreateAsync(key, async () =>
             {
-                var item = await databaseContext.Items.FindAsync(key);
-                if (item is null)
-                    return item;
+                var itemDTO = await databaseContext.Items.FindAsync(key);
+                if (itemDTO is null)
+                    return null;
 
-                var owner = await habboProfileRepository.GetAsync(item.OwnerId);
-                if (owner is not null)
-                    item.SetOwner(owner);
+                var itemData = await itemDataRepository.GetAsync(itemDTO.ItemDataId);
+                if (itemData is null)
+                    throw new NullReferenceException($"ItemData '{itemDTO.ItemDataId}' wasn't found.");
 
-                if (item.RoomInfoId is uint roomId)
+                var owner = await habboProfileRepository.GetAsync(itemDTO.OwnerId);
+                if (owner is null)
+                    throw new NullReferenceException($"ItemData '{itemDTO.OwnerId}' wasn't found.");
+
+                if (itemDTO.RoomInfoId is uint roomId)
                 {
                     var roomInfo = await roomInfoRepository.GetAsync(roomId);
-                    if (roomInfo is not null)
-                        item.SetRoomInfo(roomInfo);
+                    return new Item(itemDTO, itemData, owner, roomInfo);
                 }
 
-                return item;
+                return new Item(itemDTO, itemData, owner);
             });
         }
 

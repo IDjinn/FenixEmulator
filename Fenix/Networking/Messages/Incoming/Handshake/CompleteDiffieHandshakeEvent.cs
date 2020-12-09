@@ -8,8 +8,9 @@ using Server.Networking.Messages.Outgoing.Handshake;
 
 namespace Server.Networking.Messages.Incoming.Handshake
 {
-    internal class CompleteDiffieHandshakeEvent : IIncomingEvent
+    public class CompleteDiffieHandshakeEvent : IIncomingEvent
     {
+        public CompleteDiffieHandshakeEvent() { }
         public ValueTask Execute(IIncomingPacket packet, IClient client)
         {
             var key = HabboEncryptionV2.CalculateDiffieHellmanSharedKey(packet.ReadString());

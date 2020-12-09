@@ -14,10 +14,10 @@ namespace Server.Hotel.Rooms.Floor
 {
     public class RoomModelRepository : IRoomModelRepository
     {
-        private IDatabaseContext dbcontext { get; init; }
+        private DatabaseContext dbcontext { get; init; }
         private ILogger<IRoomModelRepository> logger { get; init; }
         private IBaseCache<IRoomModel> roomModelsCache { get; init; }
-        public RoomModelRepository(IDatabaseContext dbcontext, IBaseCache<IRoomModel> roomModelsCache, ILogger<IRoomModelRepository> logger)
+        public RoomModelRepository(DatabaseContext dbcontext, IBaseCache<IRoomModel> roomModelsCache, ILogger<IRoomModelRepository> logger)
         {
             this.dbcontext = dbcontext;
             this.logger = logger;

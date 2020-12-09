@@ -14,12 +14,12 @@ namespace Server.Hotel.Rooms.Info
 {
     public class RoomInfoRepository : IRoomInfoRepository
     {
-        private IDatabaseContext dbContext { get; init; }
+        private DatabaseContext dbContext { get; init; }
         private ILogger<IRoomInfoRepository> logger { get; init; }
         private IBaseCache<IRoomInfo> rooomInfosCache { get; init; }
         private IHabboProfileRepository habboProfileRepository { get; init; }
         public RoomInfoRepository(
-            IDatabaseContext dbContext,
+            DatabaseContext dbContext,
             IBaseCache<IRoomInfo> rooomInfosCache,
             ILogger<IRoomInfoRepository> logger,
             IHabboProfileRepository habboProfileRepository)

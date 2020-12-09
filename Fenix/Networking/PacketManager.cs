@@ -34,12 +34,12 @@ namespace Server.Networking
             this.provider = provider;
             incomingEvents = new Dictionary<ushort, IIncomingEvent>();
 
-            RegisterIncoming(IncomingPacketsHeader.InitDiffieHandshake, typeof(InitDiffieHandshakeEvent));
-            RegisterIncoming(IncomingPacketsHeader.PingEvent, typeof(PingEvent));
-            RegisterIncoming(IncomingPacketsHeader.ReleaseVersionEvent, typeof(ReleaseVersionEvent));
-            RegisterIncoming(IncomingPacketsHeader.SecureLoginEvent, typeof(SecureLoginEvent));
-            RegisterIncoming(IncomingPacketsHeader.MachineIDEvent, typeof(MachineIdEvent));
-            RegisterIncoming(IncomingPacketsHeader.PolicyRequestEvent, typeof(PolicyRequestEvent));
+            RegisterIncoming<InitDiffieHandshakeEvent>(IncomingPacketsHeader.InitDiffieHandshake);
+            RegisterIncoming<PingEvent>(IncomingPacketsHeader.PingEvent);
+            RegisterIncoming<ReleaseVersionEvent>(IncomingPacketsHeader.ReleaseVersionEvent);
+            RegisterIncoming<SecureLoginEvent>(IncomingPacketsHeader.SecureLoginEvent);
+            RegisterIncoming<MachineIdEvent>(IncomingPacketsHeader.MachineIDEvent);
+            RegisterIncoming<PolicyRequestEvent>(IncomingPacketsHeader.PolicyRequestEvent);
         }
 
         public async ValueTask HandlePacket(IClient client, IIncomingPacket packet)
@@ -104,6 +104,7 @@ namespace Server.Networking
 
         private ValueTask<bool> HandleScpecialPacket(IClient client, IIncomingPacket packet)
         {
+            
             if (packet.Buffer[0] == 60)
             {
                 client.Send(Constants.POLICY_REQUEST_RESPONSE);
@@ -113,10 +114,9 @@ namespace Server.Networking
             return new ValueTask<bool>(false);
         }
 
-        private void RegisterIncoming(ushort id, Type incomingEvent)
+        private void RegisterIncoming<T>(ushort id) where T : IIncomingEvent
         {
-            var instance = ActivatorUtilities.CreateInstance<IIncomingEvent>(provider, incomingEvent);
-            incomingEvents.Add(id, instance);
+            incomingEvents.Add(id, ActivatorUtilities.CreateInstance<T>(provider));
         }
     }
 }

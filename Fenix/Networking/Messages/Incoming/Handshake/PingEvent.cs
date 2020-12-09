@@ -7,8 +7,9 @@ using Api.Util.Attributes;
 namespace Server.Networking.Messages.Incoming.Handshake
 {
     [NoAuth]
-    internal class PingEvent : IIncomingEvent
+    public class PingEvent : IIncomingEvent
     {
+        public PingEvent() { }
         public ValueTask Execute(IIncomingPacket packet, IClient client)
         {
             return default;

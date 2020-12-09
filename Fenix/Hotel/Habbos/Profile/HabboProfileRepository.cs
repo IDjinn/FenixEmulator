@@ -12,9 +12,9 @@ namespace Server.Hotel.Habbos.Profile
 {
     public class HabboProfileRepository : IHabboProfileRepository
     {
-        private IDatabaseContext databaseContext { get; init; }
+        private DatabaseContext databaseContext { get; init; }
         private IBaseCache<IHabboProfile> profilesCache { get; init; }
-        public HabboProfileRepository(IDatabaseContext databaseContext, IBaseCache<IHabboProfile> profilesCache)
+        public HabboProfileRepository(DatabaseContext databaseContext, IBaseCache<IHabboProfile> profilesCache)
         {
             this.databaseContext = databaseContext;
             this.profilesCache = profilesCache;

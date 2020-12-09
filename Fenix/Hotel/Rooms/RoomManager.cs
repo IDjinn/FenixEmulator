@@ -16,13 +16,13 @@ namespace Server.Hotel.Rooms
     {
         private ConcurrentDictionary<uint, IRoom> loadedRooms { get; init; }
         private ILogger<IRoomManager> logger { get; init; }
-        private IDatabaseContext databaseContext { get; init; }
+        private DatabaseContext databaseContext { get; init; }
         private IRoomFactory roomFactory { get; init; }
         private IRoomInfoRepository roomInfoRepository { get; init; }
         private IRoomModelRepository roomModelRepository { get; init; }
         public RoomManager(ILogger<IRoomManager> logger,
                            IRoomFactory roomFactory,
-                           IDatabaseContext databaseContext,
+                           DatabaseContext databaseContext,
                            IRoomInfoRepository roomInfoRepository,
                            IRoomModelRepository roomModelRepository)
         {

@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace Api.Util.Repository
 {
-    public interface GenericRepository<TProduct, TKey>
+    public interface IGenericRepository<TProduct, TKey>
     {
         public ValueTask<List<TProduct>> GetAllAsync();
         public ValueTask<TProduct?> GetAsync(TKey key);

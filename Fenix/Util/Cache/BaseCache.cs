@@ -76,13 +76,12 @@ namespace Server.Util.Cache
             if (keyProperty is null)
                 throw new ArgumentNullException(nameof(keyProperty));
 
-            for (int i = 0; i < values.Count; i++)
+            foreach (var item in values)
             {
                 lock (locker)
                 {
-                    var @value = values[i];
-                    var key = keyProperty.GetValue(@value);
-                    cache.Set(key, @value, options ?? defaultCacheEntryOptions);
+                    var key = keyProperty.GetValue(item);
+                    cache.Set(key, item, options ?? defaultCacheEntryOptions);
                 }
             }
         }

@@ -1,11 +1,9 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 
 using Api.Hotel.Items;
 using Api.Networking;
 
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
@@ -48,9 +46,7 @@ namespace Server
         {
             socketManager.StartListener();
             await itemManager.Init();
-           var item = await itemRepository.GetAsync(1);
-            // await itemManager.Init();
-            logger.LogInformation($"Started.... {item}");
+            logger.LogInformation($"Started....");
         }
 
         public async Task StopAsync(CancellationToken cancellationToken)

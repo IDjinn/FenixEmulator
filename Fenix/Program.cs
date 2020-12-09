@@ -58,11 +58,6 @@ namespace Server
 
             return Host.CreateDefaultBuilder(args)
                 .UseContentRoot(Directory.GetCurrentDirectory())
-#if DEBUG
-                .UseEnvironment(Environment.GetEnvironmentVariable("FENIX_ENV") ?? "Development")
-#else
-                .UseEnvironment("Production")
-#endif
                 .ConfigureAppConfiguration(builder =>
                 {
                     builder.AddConfiguration(configuration);
@@ -74,11 +69,11 @@ namespace Server
                 })
                 .ConfigureServices((host, services) =>
                 {
-                    services.AddTransient<IDatabaseContext, DatabaseContext>(serviceProvider =>
+                    services.AddTransient<DatabaseContext, DatabaseContext>(serviceProvider =>
                     {
                         return ActivatorUtilities.CreateInstance<DatabaseContext>(serviceProvider,
                             new DbContextOptionsBuilder()
-                            .UseMySql(configuration.GetConnectionString("Habbo")).Options); 
+                            .UseMySql(configuration.GetConnectionString("Default")).Options);
                     });
 
                     services.AddSingleton<IItemManager, ItemManager>();
@@ -92,7 +87,7 @@ namespace Server
                     services.AddSingleton<IRoomFactory, RoomFactory<Room>>();
                     services.AddSingleton<IHabboFactory, HabboFactory<Habbo>>();
 
-                    //Repository
+                    //Repositories
                     services.AddSingleton<IRoomModelRepository, RoomModelRepository>();
                     services.AddSingleton<IRoomInfoRepository, RoomInfoRepository>();
                     services.AddSingleton<IItemRepository, ItemRepository>();
@@ -101,8 +96,7 @@ namespace Server
                     services.AddSingleton<IItemRepository, ItemRepository>();
 
                     services.AddTransient(typeof(IBaseCache<>), typeof(BaseCache<>));
-
-
+                    services.AddTransient<IUnitOfWork, UnitOfWork>();
 
                     services.AddHostedService<Fenix>();
                 })

@@ -20,7 +20,7 @@ namespace Server.Hotel.Habbos.Profile
         public String? Mail { get; init; }
         public String? IpRegister { get; init; }
         public String? IpLogin { get; init; }
-        public String? MachineId { get; internal set; }
+        public String? MachineId { get; private set; }
         public string SSO { get; }
 
         [NotMapped]

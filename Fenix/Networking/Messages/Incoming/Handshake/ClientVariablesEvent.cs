@@ -7,8 +7,9 @@ using Api.Util.Attributes;
 namespace Server.Networking.Messages.Incoming.Handshake
 {
     [NoAuth]
-    internal class ClientVariablesEvent : IIncomingEvent
+    public class ClientVariablesEvent : IIncomingEvent
     {
+        public ClientVariablesEvent() { }
         public ValueTask Execute(IIncomingPacket packet, IClient client)
         {
             return default;

@@ -8,7 +8,7 @@ using Server.Hotel.Rooms.Info;
 
 namespace Server.Database
 {
-    public class DatabaseContext : DbContext, IDatabaseContext
+    public class DatabaseContext : DbContext
     {
         public DatabaseContext() { }
         public DatabaseContext(DbContextOptions options) : base(options)
@@ -20,10 +20,10 @@ namespace Server.Database
         public DbSet<ItemData> ItemDatas { get; protected set; }
         public DbSet<RoomInfo> RoomInfos { get; protected set; }
         // 
-        
-        public DbSet<Item> Items { get; protected set; }
 
-        protected internal virtual void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        public DbSet<ItemDTO> Items { get; protected set; }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
         }
@@ -55,5 +55,6 @@ namespace Server.Database
             HabboProfiles.AddRange(profiles);
             SaveChanges();*/
         }
+
     }
 }

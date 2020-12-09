@@ -3,7 +3,7 @@ using Api.Util.Repository;
 
 namespace Api.Hotel.Rooms.Floor
 {
-    public interface IRoomModelRepository : GenericRepository<IRoomModel, string>
+    public interface IRoomModelRepository : IGenericRepository<IRoomModel, string>
     {
     }
 }

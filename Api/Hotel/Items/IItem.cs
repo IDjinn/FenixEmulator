@@ -10,7 +10,7 @@ namespace Api.Hotel.Items
     {
         public ulong Id { get; init; }
         public uint OwnerId { get; init; }
-        public uint ItemDataId { get; init; }
+        public ushort ItemDataId { get; init; }
         public uint? RoomInfoId { get; init; }
 
         public IHabboProfile? Owner { get; }

@@ -2,7 +2,7 @@
 
 namespace Api.Hotel.Rooms.Info
 {
-    public interface IRoomInfoRepository : GenericRepository<IRoomInfo, uint>
+    public interface IRoomInfoRepository : IGenericRepository<IRoomInfo, uint>
     {
 
     }

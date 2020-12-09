@@ -6,9 +6,6 @@ using Api.Hotel.Items;
 using Api.Hotel.Rooms;
 using Api.Hotel.Rooms.Info;
 
-using Server.Hotel.Habbos.Profile;
-using Server.Hotel.Rooms.Info;
-
 namespace Server.Hotel.Items
 {
     [Table("items")]
@@ -17,30 +14,18 @@ namespace Server.Hotel.Items
         protected readonly object locker = new object();
 
         public ulong Id { get; init; }
-
         public uint OwnerId { get; init; }
-        public uint ItemDataId { get; init; }
+        public ushort ItemDataId { get; init; }
         public uint? RoomInfoId { get; init; }
 
-        [NotMapped]
 
         public IHabboProfile? Owner { get; private set; }
-
-        [NotMapped]
-
         public IItemData? ItemData { get; private set; }
-
-        [NotMapped]
-
         public IRoomInfo? RoomInfo { get; private set; }
 
-        [NotMapped]
         public IRoom? Room { get; private set; }
-        [NotMapped]
         private bool updateNeeded;
-        [NotMapped]
         public bool InRoom => Room is IRoom;
-        [NotMapped]
         public bool UpdateNeeded
         {
             get => updateNeeded;
@@ -49,6 +34,23 @@ namespace Server.Hotel.Items
                 lock (locker) updateNeeded = value;
             }
         }
+
+        public Item(IItemDTO itemDTO, IItemData itemData, IHabboProfile owner)
+        {
+            Id = itemDTO.Id;
+            ItemDataId = itemDTO.ItemDataId;
+            OwnerId = itemDTO.OwnerId;
+            RoomInfoId = itemDTO.RoomInfoId;
+            ItemData = itemData;
+            Owner = owner;
+        }
+
+        public Item(IItemDTO itemDTO, IItemData itemData, IHabboProfile owner, IRoomInfo? roomInfo) : this(itemDTO, itemData, owner)
+        {
+            RoomInfo = roomInfo;
+        }
+
+
         public virtual ValueTask Update(params object[] args)
         {
             return default;

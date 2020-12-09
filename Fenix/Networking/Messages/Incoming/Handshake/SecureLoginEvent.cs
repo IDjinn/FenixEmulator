@@ -11,7 +11,7 @@ using Server.Networking.Messages.Outgoing.Handshake;
 namespace Server.Networking.Messages.Incoming.Handshake
 {
     [NoAuth]
-    internal class SecureLoginEvent : IIncomingEvent
+    public class SecureLoginEvent : IIncomingEvent
     {
         private IHabboManager habboManager { get; init; }
         public SecureLoginEvent(IHabboManager habboManager)

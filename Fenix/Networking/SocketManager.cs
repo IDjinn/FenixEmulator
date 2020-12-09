@@ -83,7 +83,7 @@ namespace Server.Networking
             }
             catch (Exception e)
             {
-                logger.LogError("Error accepting connection!", e);
+                logger.LogError($"Error accepting connection: {e.Message}");
             }
         }
     }

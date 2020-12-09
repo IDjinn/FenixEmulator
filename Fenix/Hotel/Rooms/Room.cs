@@ -15,9 +15,9 @@ namespace Server.Hotel.Rooms
         public IRoomModel RoomModel { get; init; }
 
         private ILogger<IRoom> logger { get; init; }
-        private IDatabaseContext databaseContext { get; init; }
+        private DatabaseContext databaseContext { get; init; }
 
-        public Room(ILogger<IRoom> logger, IRoomInfo roomInfo, IDatabaseContext databaseContext)
+        public Room(ILogger<IRoom> logger, IRoomInfo roomInfo, DatabaseContext databaseContext)
         {
             this.logger = logger;
             this.databaseContext = databaseContext;
