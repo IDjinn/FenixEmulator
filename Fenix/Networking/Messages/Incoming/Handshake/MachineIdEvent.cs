@@ -17,7 +17,7 @@ namespace Fenix.Networking.Messages.Incoming.Handshake
 
             if (string.IsNullOrWhiteSpace(MachineId) || client.Habbo is null) return;
 
-            client.Habbo.HabboProfile.MachineId = MachineId;
+            // client.Habbo!.HabboProfile.MachineId = MachineId;
         }
     }
 }

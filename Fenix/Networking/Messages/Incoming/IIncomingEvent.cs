@@ -9,6 +9,7 @@ namespace Fenix.Networking.Messages.Incoming
 {
     interface IIncomingEvent
     {
+        public IPacketBucket? Bucket { get; }
         ValueTask Parse(IIncomingPacket packet, IClient client);
     }
 }

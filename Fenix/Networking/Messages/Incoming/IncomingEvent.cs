@@ -9,10 +9,8 @@ namespace Fenix.Networking.Messages.Incoming
 {
     class IncomingEvent : IIncomingEvent
     {
-        public IncomingEvent()
-        {
-            Console.WriteLine("here with auth");
-        }
+        public virtual IPacketBucket? Bucket { get; protected set; }
+
         public virtual async ValueTask Parse(IIncomingPacket packet, IClient client)
         {
             await ValueTask.CompletedTask;

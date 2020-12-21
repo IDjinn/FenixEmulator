@@ -18,7 +18,6 @@ namespace Fenix.Hotel.Rooms.Floor
         public ushort Z { get; init; }
         public FloorState State { get; private set; }
 
-        private ConcurrentDictionary<ushort, IRoomUnit> tileUnits { get; init; }
 
         public RoomTile(ushort x, ushort y, ushort z, FloorState state = FloorState.OPEN)
         {
@@ -26,8 +25,6 @@ namespace Fenix.Hotel.Rooms.Floor
             Y = y;
             Z = z;
             State = state;
-
-            tileUnits = new ConcurrentDictionary<ushort, IRoomUnit>();
         }
     }
 }

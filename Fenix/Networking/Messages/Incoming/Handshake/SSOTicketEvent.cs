@@ -24,7 +24,7 @@ namespace Fenix.Networking.Messages.Incoming.Handshake
                 throw new NullReferenceException();
 
             client.SetSSO(SSO);
-            client.IsAuthentificated = true;
+            // client.IsAuthentificated = true;
             // TODO: Load habbo
         }
     }
