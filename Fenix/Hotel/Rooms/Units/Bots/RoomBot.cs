@@ -1,4 +1,5 @@
 ﻿using Fenix.Hotel.Habbos;
+using Fenix.Hotel.Habbos.Profile;
 using Fenix.Hotel.Rooms.Units.Util;
 using Fenix.Networking.Messages.Outgoing;
 using System;
@@ -11,8 +12,7 @@ namespace Fenix.Hotel.Rooms.Units.Bots
 {
     record RoomBot : RoomUnit, IRoomBot
     {
-        public ushort OwnerId { get; init; }
-        public IHabbo? Owner { get; private set; }
+        public IHabboProfile Owner { get; private set; }
         public byte DanceId { get; private set; }
 
         public bool IsDancing => DanceId > 0;

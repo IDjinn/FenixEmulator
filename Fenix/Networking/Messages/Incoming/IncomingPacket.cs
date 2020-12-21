@@ -14,9 +14,9 @@ namespace Fenix.Networking.Messages.Incoming
         public byte[] Buffer { get; private set; }
         public int Pointer { get; private set; } = 0;
 
-        public IncomingPacket(byte[] Buffer)
+        public IncomingPacket(int BufferSize)
         {
-            this.Buffer = Buffer;
+            Buffer = new byte[BufferSize];
             Id = ReadInt();
         }
 

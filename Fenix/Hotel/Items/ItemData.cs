@@ -1,9 +1,13 @@
 ﻿using Fenix.Hotel.Items.Util;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Fenix.Hotel.Items
 {
-    internal interface IBaseItem
+    record ItemData : IItemData
     {
         public ushort Id { get; init; }
         public ushort SpriteId { get; init; }
@@ -24,5 +28,7 @@ namespace Fenix.Hotel.Items
         public InteractionType InteractionType { get; init; }
         public int Modes { get; init; }
         public double[] AdjustableHeights { get; init; }
+
+        public ItemData() { }
     }
 }

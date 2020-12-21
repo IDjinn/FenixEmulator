@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Fenix.Hotel.Rooms.Floor
 {
-    enum FloorState : byte
+    public enum FloorState : byte
     {
         BLOCKED,
         OPEN

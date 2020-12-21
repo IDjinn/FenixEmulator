@@ -1,4 +1,5 @@
 ﻿using Fenix.Hotel.Habbos;
+using Fenix.Hotel.Habbos.Profile;
 using Fenix.Hotel.Rooms.Units.Util;
 using Fenix.Networking.Messages.Outgoing;
 using System;
@@ -10,15 +11,13 @@ using System.Threading.Tasks;
 namespace Fenix.Hotel.Rooms.Units.Pets
 {
     record RoomPet : RoomUnit, IRoomPet
-    {
-        public ushort OwnerId { get; init; }
-
-        public IHabbo? Owner { get; private set; }
+    { 
+        public IHabboProfile Owner { get; private set; }
 
         public RoomPet(IRoom room, string name) : base(room, name) { }
 
         public RoomPet(RoomUnit roomUnit) : base(roomUnit) { }
-        public RoomPet(RoomUnit roomUnit, IHabbo? owner) : base(roomUnit) => Owner = owner;
+        public RoomPet(RoomUnit roomUnit, IHabboProfile owner) : base(roomUnit) => Owner = owner;
 
         public IOutgoingPacket Serializable()
         {
@@ -32,8 +31,8 @@ namespace Fenix.Hotel.Rooms.Units.Pets
                 .WriteInt(0)
                 .WriteInt(2)
                 .WriteInt(200) // pet type
-                .WriteInt(OwnerId)
-                .WriteString(Owner?.HabboProfile.Username ?? "unknown")
+                .WriteUInt(Owner.Id)
+                .WriteString(Owner.Username ?? "unknown")
                 .WriteBoolean(false) // sela
                 .WriteBoolean(false)
                 .WriteBoolean(false) // can breed

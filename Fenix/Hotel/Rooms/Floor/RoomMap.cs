@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Fenix.Hotel.Items;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -13,39 +14,13 @@ namespace Fenix.Hotel.Rooms.Floor
     {
         public IRoom Room { get; init; }
         public IRoomModel RoomModel { get; init; }
-        private ConcurrentDictionary<Point, FloorState> floorState { get; init; }
+        private ConcurrentDictionary<Point, IItem> floorItems { get; init; }
 
         public RoomMap(IRoom room, IRoomModel roomModel)
         {
             Room = room;
             RoomModel = roomModel;
-            floorState = new ConcurrentDictionary<Point, FloorState>();
-
-            var floorPoints = roomModel.FloorMap.Keys.ToArray();
-            for (int i = 0; i < floorPoints.Length; i++)
-            {
-                var point = floorPoints[i];
-                var heigth = RoomModel.FloorMap[point]; // TODO: Refractor this for
-                floorState[point] = FloorStateFromHeigth(heigth);
-            }
+            floorItems = new ConcurrentDictionary<Point, IItem>();
         }
-
-        public FloorState? TryGetFloorStateAt(Point point)
-        {
-            if (floorState.TryGetValue(point, out FloorState state))
-                return state;
-
-            return null;
-        }
-
-        public static FloorState FloorStateFromHeigth(byte heigth)
-        {
-            return heigth switch
-            {
-                byte.MaxValue => FloorState.BLOCKED,
-                _ => FloorState.OPEN
-            };
-        }
-
     }
 }

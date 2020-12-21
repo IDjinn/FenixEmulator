@@ -10,7 +10,6 @@ namespace Fenix.Hotel.Rooms.Floor
         public ushort DoorX { get; init; }
         public ushort DoorY { get; init; }
         public ushort DoorZ { get; init; }
-        [NotMapped]
-        public ReadOnlyDictionary<Point, byte> FloorMap { get; init; }
+        public ReadOnlyDictionary<Point, IRoomTile> FloorMap { get; init; }
     }
 }

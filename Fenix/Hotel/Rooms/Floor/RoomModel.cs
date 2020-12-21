@@ -14,24 +14,26 @@ namespace Fenix.Hotel.Rooms.Floor
         public ushort DoorX { get; init; }
         public ushort DoorY { get; init; }
         public ushort DoorZ { get; init; }
-        public ReadOnlyDictionary<Point, byte> FloorMap { get; init; }
+        public ReadOnlyDictionary<Point, IRoomTile> FloorMap { get; init; }
 
         public RoomModel()
         {
             Name = string.Empty;
-            FloorMap = new ReadOnlyDictionary<Point, byte>(ParseFloorMap("floormap here"));
+            FloorMap = new ReadOnlyDictionary<Point, IRoomTile>(ParseFloorMap("floormap here"));
         }
 
-        public static Dictionary<Point, byte> ParseFloorMap(string floorHeigthMap)
+        public static Dictionary<Point, IRoomTile> ParseFloorMap(string floorHeigthMap) // TODO: Check these fors
         {
-            var dict = new Dictionary<Point, byte>();
+            var dict = new Dictionary<Point, IRoomTile>();
             string[] lines = floorHeigthMap.ToLower().Split('\n');
-            for (int i = 0; i < lines.Length; i++)
+            for (ushort i = 0; i < lines.Length; i++) 
             {
-                for (int j = 0; j < floorHeigthMap.Length; j++)
+                for (ushort j = 0; j < floorHeigthMap.Length; j++)
                 {
                     var point = new Point(i, j);
-                    dict.Add(point, ParseFloorHeight(lines[i][j]));
+                    var state = lines[i][j] == 'x' ? FloorState.BLOCKED : FloorState.OPEN;
+                    var tile = new RoomTile(i, j, ParseFloorHeight(lines[i][j]), state);
+                    dict.Add(point, tile);
                 }
             }
 
@@ -76,7 +78,7 @@ namespace Fenix.Hotel.Rooms.Floor
                 'v' => 31,
                 'w' => 32,
                 'x' => byte.MaxValue,
-                _ => throw new FormatException("The input was not in a correct format: input must be between (0-w)"),
+                _ => throw new FormatException("The input was not in a correct format: input must be between (0-x)"),
             };
         }
     }

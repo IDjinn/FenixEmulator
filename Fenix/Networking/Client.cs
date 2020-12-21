@@ -28,9 +28,8 @@ namespace Fenix.Networking
 
         public void Init()
         {
-            byte[] Buffer = new byte[SocketManager.BUFFER_SIZE];
-            using IIncomingPacket packet = new IncomingPacket(Buffer);
-            socket.BeginReceive(Buffer, 0, Buffer.Length, SocketFlags.None, new AsyncCallback(RecieveCallback), socket);
+            using IIncomingPacket packet = new IncomingPacket(SocketManager.BUFFER_SIZE);
+            socket.BeginReceive(packet.Buffer, 0, packet.Buffer.Length, SocketFlags.None, new AsyncCallback(RecieveCallback), socket);
         }
 
         private void RecieveCallback(IAsyncResult asyncResult)

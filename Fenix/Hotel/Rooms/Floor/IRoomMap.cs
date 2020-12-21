@@ -6,7 +6,5 @@ namespace Fenix.Hotel.Rooms.Floor
     {
         public IRoom Room { get; init; }
         public IRoomModel RoomModel { get; init; }
-
-        public FloorState? TryGetFloorStateAt(Point point);
     }
 }

@@ -1,11 +1,11 @@
 ﻿using Fenix.Hotel.Habbos;
+using Fenix.Hotel.Habbos.Profile;
 using Fenix.Util.Interfaces;
 
 namespace Fenix.Hotel.Rooms.Units.Pets
 {
     internal interface IRoomPet : IPacketSerializable
     {
-        public ushort OwnerId { get; init; }
-        public IHabbo? Owner { get; }
+        public IHabboProfile Owner { get; }
     }
 }
