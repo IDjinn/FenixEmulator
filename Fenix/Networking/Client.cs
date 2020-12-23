@@ -1,6 +1,8 @@
 ﻿using Fenix.Hotel.Habbos;
 using Fenix.Networking.Messages;
 using Fenix.Networking.Messages.Incoming;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -19,11 +21,14 @@ namespace Fenix.Networking
         public string? SSO { get; private set; }
         public IHabbo? Habbo { get; private set; }
         public bool IsAuthentificated { get; private set; } = false;
+        private ISocketManager socketManager { get; init; }
+        private ILogger logger = NullLogger.Instance;
 
-        public Client(Socket socket)
+        public Client(ISocketManager socketManager, Socket socket)
         {
             ConnectionId = Guid.NewGuid();
             this.socket = socket;
+            this.socketManager = socketManager;
         }
 
         public void Init()
@@ -38,23 +43,30 @@ namespace Fenix.Networking
             {
                 using IIncomingPacket? packet = asyncResult.AsyncState as IIncomingPacket;
                 if (packet is not IIncomingPacket)
-                    throw new ArgumentNullException(nameof(packet), "Packet cannot be null");
+                    throw new ArgumentException(nameof(packet), "Packet muste be typeof IIncomingPacket");
 
                 int bytesRead = socket.EndReceive(asyncResult);
                 if (bytesRead > 0)
                 {
-                    int id = packet.ReadInt();
-                    Console.WriteLine($"Id {id} packet {BitConverter.ToString(packet.Buffer)}");
-
-                       // int readsize = (SocketManager.BUFFER_SIZE > size) ? size : SocketManager.BUFFER_SIZE;
-                        //packet.Socket.BeginReceive(packet.Buffer, packet.ReaderPointer, readsize, SocketFlags.None, new AsyncCallback(recieveCallback), packet);
+                    ushort id = packet.ReadUShort();
+                    logger.LogInformation($"Id {id} packet {BitConverter.ToString(packet.Buffer)}");
                 }
             }
-            catch
+            catch (ArgumentException argException)
             {
-                //log("Error recieving Message!");
-                //closeClient();
-                throw new Exception();
+                logger.LogError(argException.Message, argException);
+            }
+            catch (ObjectDisposedException disposedException)
+            {
+                logger.LogWarning("Socket was disposed.", disposedException);
+            }
+            catch (SocketException socketException)
+            {
+                logger.LogError(socketException.Message, socketException);
+            }
+            catch (InvalidOperationException invalidOperationException)
+            {
+                logger.LogError(invalidOperationException.Message, invalidOperationException);
             }
         }
 
@@ -63,10 +75,15 @@ namespace Fenix.Networking
             try
             {
                 socket.BeginSend(packet.Buffer, 0, packet.Buffer.Length, SocketFlags.None, out SocketError errorCode, new AsyncCallback(SendCallback), packet);
+
             }
-            catch (Exception e)
+            catch (ObjectDisposedException disposedException)
             {
-                Console.WriteLine("Error: ", e.ToString());
+                logger.LogWarning("Socket was disposed.", disposedException);
+            }
+            catch (SocketException socketException)
+            {
+                logger.LogError(socketException.Message, socketException);
             }
         }
 
@@ -77,14 +94,26 @@ namespace Fenix.Networking
             {
                 using IIncomingPacket? packet = asyncResult.AsyncState as IIncomingPacket;
                 if (packet is not IIncomingPacket)
-                    throw new ArgumentNullException(nameof(packet), "Packet must not be null");
+                    throw new ArgumentException(nameof(packet), "Packet muste be typeof IIncomingPacket");
 
                 int bytesSent = socket.EndSend(asyncResult);
                 Console.WriteLine("Bytes sent: " + bytesSent + " of " + packet.Buffer.Length + 4);
             }
-            catch (Exception e)
+            catch (ArgumentException argException)
             {
-                Console.WriteLine("Error: ", e.ToString());
+                logger.LogError(argException.Message, argException);
+            }
+            catch (ObjectDisposedException disposedException)
+            {
+                logger.LogWarning("Socket was disposed.", disposedException);
+            }
+            catch (SocketException socketException)
+            {
+                logger.LogError(socketException.Message, socketException);
+            }
+            catch (InvalidOperationException invalidOperationException)
+            {
+                logger.LogError(invalidOperationException.Message, invalidOperationException);
             }
         }
 

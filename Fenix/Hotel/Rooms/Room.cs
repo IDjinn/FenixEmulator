@@ -1,7 +1,9 @@
-﻿using Fenix.Hotel.Rooms.Floor;
+﻿using Fenix.Database;
+using Fenix.Hotel.Rooms.Floor;
 using Fenix.Hotel.Rooms.Info;
 using Fenix.Hotel.Rooms.Units;
 using Fenix.Networking.Messages.Outgoing;
+using Fenix.Util.Cache;
 using Microsoft.Build.Framework;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -23,10 +25,12 @@ namespace Fenix.Hotel.Rooms
         private IServiceCollection services { get; init; }
         private IServiceProvider serviceProvider { get; init; }
         private ILogger<IRoom> logger { get; init; }
+        private IDatabaseContext databaseContext { get; init; }
 
-        public Room(ILogger<IRoom> logger, IRoomInfo roomInfo)
+        public Room(ILogger<IRoom> logger, IRoomInfo roomInfo, IDatabaseContext databaseContext)
         {
             this.logger = logger;
+            this.databaseContext = databaseContext;
             Id = roomInfo.Id;
             RoomInfo = roomInfo;
             services = new ServiceCollection();

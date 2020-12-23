@@ -1,4 +1,5 @@
-﻿using Fenix.Networking;
+﻿using Fenix.Hotel.Habbos.Profile;
+using Fenix.Networking;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,7 @@ namespace Fenix.Hotel.Habbos
 {
     interface IHabboManager
     {
+        ValueTask<IHabboProfile?> GetProfile(uint Id);
         ValueTask<IHabbo> LoadHabbo(IClient client);
     }
 }

@@ -23,7 +23,7 @@ namespace Fenix.Hotel.Rooms.Units.Bots
 
         public RoomBot(IRoom room, string name) : base(room, name) { }
 
-        public RoomBot(IRoom room, IHabbo owner) : base(room) => Owner = owner;
+        public RoomBot(IRoom room, IHabboProfile owner) : base(room, "") => Owner = owner;
 
         public void StartDance(byte danceId)
         {
@@ -59,8 +59,8 @@ namespace Fenix.Hotel.Rooms.Units.Bots
                 .WriteByte(BodyDirection)
                 .WriteInt(4)
                 .WriteString("Gender")
-                .WriteInt(OwnerId)
-                .WriteString(Owner?.HabboProfile.Username ?? "Unknown")
+                .WriteUInt(Owner.Id)
+                .WriteString(Owner.Username ?? "Unknown")
                 .WriteInt(10)
                 // shorts
                 .WriteInt(0)

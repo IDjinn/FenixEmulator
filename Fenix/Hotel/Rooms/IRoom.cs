@@ -15,5 +15,6 @@ namespace Fenix.Hotel.Rooms
         public uint Id { get; init; }
         public IRoomInfo RoomInfo { get; init; }
         public IRoomModel RoomModel { get; init; }
+
     }
 }

@@ -12,6 +12,7 @@ using Fenix.Networking;
 using Fenix.Hotel.Habbos;
 using Fenix.Database;
 using Microsoft.EntityFrameworkCore;
+using Pomelo.EntityFrameworkCore.MySql;
 
 namespace Fenix
 {
@@ -46,6 +47,10 @@ namespace Fenix
 
             try
             {
+                AppDomain.CurrentDomain.FirstChanceException += (sender, eventArgs) =>
+                {
+                    Console.WriteLine(eventArgs.Exception.ToString());
+                };
                 CreateHostBuilder(args).Build().Run();
                 Console.ReadLine();
             }
@@ -76,16 +81,6 @@ namespace Fenix
             var configuration = CreateConfiguration(args);
 
             return Host.CreateDefaultBuilder(args)
-                .ConfigureServices((host, services) =>
-                {
-                    services.AddHostedService<Fenix>();
-                    services.AddSingleton<SocketManager>();
-                    services.AddSingleton<IHabboManager, HabboManager>();
-                    services.AddDbContext<FenixDatabaseContext>(options =>
-                    {
-                        options.UseMySql("Server=127.0.1;Database=habbo;Uid=root;Pwd=root;");
-                    });
-                })
                 .UseContentRoot(Directory.GetCurrentDirectory())
 #if DEBUG
                 .UseEnvironment(Environment.GetEnvironmentVariable("FENIX_ENV") ?? "Development")
@@ -100,6 +95,10 @@ namespace Fenix
                 {
                     logging.ClearProviders();
                     logging.AddConsole();
+                })
+                .ConfigureServices((host, services) =>
+                {
+                    services.AddHostedService<Fenix>();
                 })
                 .UseConsoleLifetime();
         }

@@ -9,6 +9,8 @@ namespace Fenix.Hotel.Rooms.Floor
     public enum FloorState : byte
     {
         BLOCKED,
-        OPEN
+        OPEN,
+        SIT,
+        LAY
     }
 }

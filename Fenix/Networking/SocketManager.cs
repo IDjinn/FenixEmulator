@@ -1,4 +1,5 @@
 ﻿using Fenix.Networking.Messages;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Concurrent;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Fenix.Networking
 {
-    class SocketManager : ISocketManager
+    class SocketManager : ISocketManager, IServiceProvider
     {
         public static int PORT { get; private set; }
         public static int BUFFER_SIZE { get; private set; }
@@ -20,6 +21,8 @@ namespace Fenix.Networking
         private Socket socket { get; init; }
         private ConcurrentDictionary<Guid, Client> clients { get; init; }
         private ILogger<ISocketManager> logger { get; init; }
+        private IServiceCollection services { get; init; }
+        private IServiceProvider provider { get; init; }
 
         public SocketManager(ILogger<ISocketManager> logger, int port = 100, int? bufferSize = null, int? maxQueueConnections = null, int? maxConnections = null)
         {
@@ -31,6 +34,11 @@ namespace Fenix.Networking
 
             socket = new(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             clients = new ConcurrentDictionary<Guid, Client>();
+
+            services = new ServiceCollection();
+            services.AddLogging();
+
+            provider = services.BuildServiceProvider();
 
             this.StartListener();
         }
@@ -76,7 +84,7 @@ namespace Fenix.Networking
                     return;
                 }
 
-                var client = new Client(clientSocket);
+                var client = new Client(this, clientSocket);
                 if (clients.TryAdd(client.ConnectionId, client))
                 {
                     client.Init();
@@ -91,6 +99,11 @@ namespace Fenix.Networking
             {
                 logger.LogInformation("Error accepting connection!");
             }
+        }
+
+        public object? GetService(Type serviceType)
+        {
+            throw new NotImplementedException();
         }
     }
 }

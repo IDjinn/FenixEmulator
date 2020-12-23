@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace Fenix.Hotel.Items
 {
-    internal interface IItem
+    public interface IItem
     {
+        public ushort Id { get; init; }
         public IItemData ItemData { get; init; }
         public IHabboProfile Owner { get; init; }
         public ushort? RoomId { get; init; }

@@ -17,7 +17,6 @@
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Build" Version="16.8.0" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.1" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.1" />
 		<PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.0" />
@@ -28,5 +27,6 @@
 	<ItemGroup>
 	  <Folder Include="Core\" />
 	  <Folder Include="Hotel\Catalog\" />
+	  <Folder Include="Util\Database\" />
 	</ItemGroup>
 </Project>

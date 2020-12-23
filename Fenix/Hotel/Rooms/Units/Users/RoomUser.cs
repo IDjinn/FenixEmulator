@@ -25,7 +25,7 @@ namespace Fenix.Hotel.Rooms.Units.Users
             Habbo = habbo;
         }
 
-        public RoomUser(IHabbo habbo, IRoom room) : base(room)
+        public RoomUser(IHabbo habbo, IRoom room) : base(room, "")
         {
             Habbo = habbo;
         }

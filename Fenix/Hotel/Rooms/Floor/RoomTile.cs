@@ -17,7 +17,8 @@ namespace Fenix.Hotel.Rooms.Floor
         public ushort Y { get; init; }
         public ushort Z { get; init; }
         public FloorState State { get; private set; }
-
+        public float GScore { get; set; }
+        public float FScore { get; set; }
 
         public RoomTile(ushort x, ushort y, ushort z, FloorState state = FloorState.OPEN)
         {

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Fenix.Networking
 {
-    interface ISocketManager
+    public interface ISocketManager
     {
         public static int PORT { get; }
         public static int BUFFER_SIZE { get; }

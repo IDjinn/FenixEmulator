@@ -12,10 +12,18 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Hosting;
 using System.Threading;
 using Fenix.Database;
+using Microsoft.Extensions.DependencyInjection;
+using Fenix.Util.Cache;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Fenix.Hotel.Habbos;
+using System.Diagnostics;
+using Fenix.Hotel.Rooms;
+using Fenix.Hotel.Items;
 
 namespace Fenix
 {
-    class Fenix : IHostedService
+    public class Fenix : IHostedService, IServiceProvider
     {
         public const string MAJOR = "1";
         public const string MINOR = "0";
@@ -34,41 +42,67 @@ namespace Fenix
 
         private ISocketManager socketManager { get; init; }
         private ILogger<Fenix> logger { get; init; }
+        private IServiceCollection services { get; init; }
+        private IServiceProvider provider { get; init; }
+        private IConfiguration config { get; init; }
 
-        public Fenix(ILogger<Fenix> logger, IFenixDatabaseContext dbContext)
+        public Fenix(ILogger<Fenix> logger, IConfiguration config)
         {
             this.logger = logger;
+            this.config = config;
             logger.LogInformation(LOGO);
             logger.LogInformation($"\n\n\t\t\tVersion: {MAJOR}.{MINOR}.{PATCH}{(!string.IsNullOrWhiteSpace(PREVIEW) ? $"-{PREVIEW}" : "")}\n\n");
 
-            dbContext.HabboProfiles.FindAsync()
-
-            //socketManager = new SocketManager(port: 100);
+            try
+            {
+                services = new ServiceCollection();
+                services.AddDbContext<IDatabaseContext, DatabaseContext>((options) => options.UseMySql(config.GetConnectionString("Habbo")));
+                services.AddLogging();
+                services.AddSingleton<IItemManager, ItemManager>();
+                services.AddSingleton<ISocketManager, SocketManager>();
+                services.AddSingleton<IHabboManager, HabboManager>();
+                services.AddSingleton<IRoomManager, RoomManager>();
+            }
+            catch(Exception e) 
+            { 
+            }
+            provider = services.BuildServiceProvider();
         }
 
-        public Task StartAsync(CancellationToken cancellationToken)
+        public async Task StartAsync(CancellationToken cancellationToken)
         {
-            return Task.CompletedTask;
+            var stopWatch = new Stopwatch();
+            var manager = provider.GetService(typeof(IItemManager)) as IItemManager;
+            stopWatch.Start();
+            var profile = await manager!.LoadItemsAsync()!;
+            stopWatch.Stop();
+            logger.LogInformation($"Passou {stopWatch.ElapsedMilliseconds}");
+            stopWatch.Reset();
+            stopWatch.Stop();
+            logger.LogInformation($"Passou {stopWatch.ElapsedMilliseconds}");
+            /*
+            var stopWatch = new Stopwatch();
+            var manager = provider.GetService(typeof(IHabboManager)) as IHabboManager;
+            stopWatch.Start();
+            var profile = await manager!.GetProfile(1)!;
+            stopWatch.Stop();
+            logger.LogInformation($"Passou {stopWatch.ElapsedMilliseconds}");
+            stopWatch.Reset();
+            stopWatch.Start();
+            var profile2 = await manager!.GetProfile(2)!;
+            stopWatch.Stop();
+            logger.LogInformation($"Passou {stopWatch.ElapsedMilliseconds}");*/
+            logger.LogInformation($"Started....");
         }
 
-        public Task StopAsync(CancellationToken cancellationToken)
+        public async Task StopAsync(CancellationToken cancellationToken)
         {
-            return Task.CompletedTask;
+            logger.LogInformation($"Stoped....");
         }
 
-        private void OnStarted()
+        public object? GetService(Type serviceType)
         {
-            logger.LogInformation("Starting.");
-        }
-
-        private void OnStopping()
-        {
-            logger.LogInformation("Stopping");
-        }
-
-        private void OnStopped()
-        {
-            logger.LogInformation("Stopped");
+            return provider.GetService(serviceType);
         }
     }
 }

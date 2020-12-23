@@ -10,10 +10,11 @@ using System.Threading.Tasks;
 
 namespace Fenix.Hotel.Items
 {
-    abstract class Item : IItem
+    public abstract class Item : IItem
     {
         private static readonly object locker = new object();
 
+        public ushort Id { get; init; }
         public IItemData ItemData { get; init; }
         public IHabboProfile Owner { get; init; }
         public ushort? RoomId { get; init; }

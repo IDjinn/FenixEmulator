@@ -11,11 +11,11 @@ using System.Threading.Tasks;
 
 namespace Fenix.Hotel.Rooms.Floor
 {
-    class RoomMap : IRoomMap
+    public class RoomMap : IRoomMap
     {
         public IRoom Room { get; init; }
         public IRoomModel RoomModel { get; init; }
-        private ConcurrentDictionary<Point, IItem> floorItems { get; init; }
+        private ConcurrentDictionary<Point, List<IItem>> floorItems { get; init; }
         private ConcurrentDictionary<Point, List<IRoomUnit>> tileUnits { get; init; }
 
         public RoomMap(IRoom room, IRoomModel roomModel)
@@ -23,10 +23,38 @@ namespace Fenix.Hotel.Rooms.Floor
             Room = room;
             RoomModel = roomModel;
 
-            floorItems = new ConcurrentDictionary<Point, IItem>();
+            floorItems = new ConcurrentDictionary<Point, List<IItem>>();
             tileUnits = new ConcurrentDictionary<Point, List<IRoomUnit>>();
         }
 
+        public bool TryAddItemToMap(Point point, IItem item)
+        {
+            if (floorItems.TryGetValue(point, out List<IItem>? items))
+            {
+                items.Add(item);
+                return true;
+            }
+
+            items ??= new List<IItem>()
+            {
+                item
+            };
+
+            return floorItems.TryAdd(point, items);
+        }
+
+        public bool TryRemoveItemFromMap(Point point, IItem item)
+        {
+            if (floorItems.TryGetValue(point, out List<IItem>? items))
+            {
+                for (int i = 0; i < items.Count; i++)
+                {
+                    if (items[i].Id == item.Id)
+                        items.RemoveAt(i);
+                }
+            }
+            return true;
+        }
         public bool TryAddUnitToMap(Point point, IRoomUnit roomUnit)
         {
             if (tileUnits.TryGetValue(point, out List<IRoomUnit>? units))

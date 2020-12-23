@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,7 +13,7 @@ namespace Fenix.Hotel.Habbos.Profile
 
         public uint Id { get; init; }
         public string Username { get; init; }
-        public string Motto { get; init; }
+        public string? Motto { get; init; }
         public String Look { get; init; }
         public Byte Rank { get; init; }
         public Byte Vip { get; init; }
@@ -22,15 +23,15 @@ namespace Fenix.Hotel.Habbos.Profile
         public String? IpLogin { get; init; }
         public String? MachineId { get; internal set; }
 
-        private uint _coins { get; set; }
-        public uint Coins
+        private uint credits { get; set; }
+        public uint Credits
         {
-            get => _coins;
+            get => credits;
             set
             {
                 lock (locker)
                 {
-                    _coins = value;
+                    credits = value;
                 }
             }
         }
