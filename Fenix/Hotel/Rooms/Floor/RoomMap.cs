@@ -11,10 +11,12 @@ using System.Threading.Tasks;
 
 namespace Fenix.Hotel.Rooms.Floor
 {
+    [NotMapped]
     public class RoomMap : IRoomMap
     {
         public IRoom Room { get; init; }
         public IRoomModel RoomModel { get; init; }
+
         private ConcurrentDictionary<Point, List<IItem>> floorItems { get; init; }
         private ConcurrentDictionary<Point, List<IRoomUnit>> tileUnits { get; init; }
 
@@ -55,6 +57,7 @@ namespace Fenix.Hotel.Rooms.Floor
             }
             return true;
         }
+
         public bool TryAddUnitToMap(Point point, IRoomUnit roomUnit)
         {
             if (tileUnits.TryGetValue(point, out List<IRoomUnit>? units))

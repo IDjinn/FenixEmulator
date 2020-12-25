@@ -9,7 +9,10 @@ namespace Fenix.Hotel.Rooms.Units
     public interface IRoomUnitManager : IServiceProvider
     {
         public IRoom Room { get; }
-        public ValueTask<bool> TryJoin(IHabbo habbo, out IRoomUser roomUser);
-        public ValueTask<bool> TryAdd(object unit, out IRoomUnit roomUnit);
+
+
+        public bool TryJoin(IHabbo habbo, out IRoomUser? roomUser);
+        public bool TryAdd(IRoomUnit roomUnit);
+        public bool TryRemove(ushort roomUnitId, out IRoomUnit? roomUnit);
     }
 }

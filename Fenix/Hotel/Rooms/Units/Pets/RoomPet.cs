@@ -19,28 +19,28 @@ namespace Fenix.Hotel.Rooms.Units.Pets
         public RoomPet(RoomUnit roomUnit) : base(roomUnit) { }
         public RoomPet(RoomUnit roomUnit, IHabboProfile owner) : base(roomUnit) => Owner = owner;
 
-        public IOutgoingPacket Serializable()
+        public IOutgoingPacket Serializable(IOutgoingPacket? packet = null)
         {
             return new OutgoingPacket(0)
-                .WriteUInt(Id)
-                .WriteString("motto?")
-                .WriteString("look")
-                .WriteInt(0)// x
-                .WriteInt(0)// y
-                .WriteString(0 + "")// z
-                .WriteInt(0)
-                .WriteInt(2)
-                .WriteInt(200) // pet type
-                .WriteUInt(Owner.Id)
-                .WriteString(Owner.Username ?? "unknown")
-                .WriteBoolean(false) // sela
-                .WriteBoolean(false)
-                .WriteBoolean(false) // can breed
-                .WriteBoolean(false) // planta monstro crescida
-                .WriteBoolean(false) // planta monstro morta
-                .WriteBoolean(false) // public breedable
-                .WriteInt(0) //level
-                .WriteString("");
+                .Write((uint)Id)
+                .Write(base.Motto ?? $"My owner is {Owner.Username}")
+                .Write(base.Look)
+                .Write(0)// x
+                .Write(0)// y
+                .Write(0 + "")// z
+                .Write(0)
+                .Write(2)
+                .Write(200) // pet type
+                .Write(Owner.Id)
+                .Write(Owner.Username ?? "unknown")
+                .Write(false) // sela
+                .Write(false)
+                .Write(false) // can breed
+                .Write(false) // planta monstro crescida
+                .Write(false) // planta monstro morta
+                .Write(false) // public breedable
+                .Write(0) //level
+                .Write("");
         }
     }
 }

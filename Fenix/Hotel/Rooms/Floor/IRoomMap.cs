@@ -1,5 +1,6 @@
 ﻿using Fenix.Hotel.Items;
 using Fenix.Hotel.Rooms.Units;
+using System.Collections.Generic;
 using System.Drawing;
 
 namespace Fenix.Hotel.Rooms.Floor

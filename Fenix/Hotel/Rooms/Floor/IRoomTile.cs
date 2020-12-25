@@ -1,12 +1,16 @@
-﻿namespace Fenix.Hotel.Rooms.Floor
+﻿using System.Drawing;
+
+namespace Fenix.Hotel.Rooms.Floor
 {
     public interface IRoomTile
     {
         public ushort X { get; init; }
         public ushort Y { get; init; }
         public ushort Z { get; init; }
-        public FloorState State { get; }
         public float GScore { get; set; }
         public float FScore { get; set; }
+        public IRoomTile? Parent { get; set; }
+        public FloorState FloorState { get; set; }
+        public Point ToPoint { get; }
     }
 }

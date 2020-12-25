@@ -21,23 +21,23 @@ namespace Fenix.Hotel.Rooms.Info
         public string? Password { get; init; }
         public ushort Rating { get; init; }
 
-        public IOutgoingPacket Serializable()
+        public IOutgoingPacket Serializable(IOutgoingPacket? packet = null)
         {
             return new OutgoingPacket(0)
-                .WriteUInt(Id)
-                .WriteString(Name)
-                .WriteUInt(Owner.Id)
-                .WriteString(Owner.Username ?? "Unknown")
-                .WriteByte((byte)DoorAcess)
-                .WriteUInt(20) // users now
-                .WriteUInt(200) // users max
-                .WriteString(Description ?? "")
-                .WriteUInt(1) // trade settings
-                .WriteUInt(Rating)
-                .WriteUInt(0) // top rated room rank
-                .WriteUInt(Category)
+                .Write(Id)
+                .Write(Name)
+                .Write(Owner.Id)
+                .Write(Owner.Username ?? "Unknown")
+                .Write((byte)DoorAcess)
+                .Write((uint)20) // users now
+                .Write((uint)200) // users max
+                .Write(Description ?? "")
+                .Write((uint)1) // trade settings
+                .Write((uint)Rating)
+                .Write((uint)0) // top rated room rank
+                .Write((uint)Category)
 
-                .WriteInt(0);// tags
+                .Write(0);// tags
         }
     }
 }

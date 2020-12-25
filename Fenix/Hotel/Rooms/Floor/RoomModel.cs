@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Fenix.Util.Enums;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -15,7 +16,7 @@ namespace Fenix.Hotel.Rooms.Floor
         public ushort DoorX { get; init; }
         public ushort DoorY { get; init; }
         public ushort DoorZ { get; init; }
-        public Byte DoorDirection { get; init; }
+        public Direction DoorDirection { get; init; }
         public String FloorHeigthMap { get => ""; init => FloorMap = new ReadOnlyDictionary<Point, IRoomTile>(ParseFloorMap(value)); }
         [NotMapped]
         public ReadOnlyDictionary<Point, IRoomTile> FloorMap { get; private set; }
@@ -40,6 +41,24 @@ namespace Fenix.Hotel.Rooms.Floor
             }
 
             return dict;
+        }
+
+        public IRoomTile? GetRoomTile(Point point)
+        {
+            return FloorMap.GetValueOrDefault(point);
+        }
+
+        public IRoomTile[] GetRoomTiles(Point[] points)
+        {
+            var list = new List<IRoomTile>();
+            for (int i = 0; i < points.Length; i++)
+            {
+                var roomTile = GetRoomTile(points[i]);
+                if (roomTile is IRoomTile tile)
+                    list.Add(tile);
+            }
+
+            return list.ToArray();
         }
 
         public static byte ParseFloorHeight(char floor)

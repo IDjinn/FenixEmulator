@@ -9,6 +9,6 @@ namespace Fenix.Util.Interfaces
 {
     public interface IPacketSerializable
     {
-        public IOutgoingPacket Serializable();
+        public IOutgoingPacket Serializable(IOutgoingPacket? packet = null);
     }
 }

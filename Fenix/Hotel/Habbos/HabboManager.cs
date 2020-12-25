@@ -22,7 +22,7 @@ namespace Fenix.Hotel.Habbos
             this.dbContext = dbContext;
         }
 
-        public async ValueTask<IHabboProfile?> GetProfile(uint Id)
+        public async ValueTask<IHabboProfile?> GetProfileAsync(uint Id)
         {
             var model = await dbContext.RoomModels.FindAsync("model_0");
             return await profileCache.GetOrCreate(Id, async() => await dbContext.HabboProfiles.FindAsync(Id));

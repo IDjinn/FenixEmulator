@@ -1,6 +1,7 @@
 ﻿using Fenix.Hotel.Habbos;
 using Fenix.Hotel.Habbos.Profile;
 using Fenix.Hotel.Rooms;
+using Fenix.Hotel.Rooms.Info;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -17,13 +18,15 @@ namespace Fenix.Hotel.Items
         public ushort Id { get; init; }
         public IItemData ItemData { get; init; }
         public IHabboProfile Owner { get; init; }
-        public ushort? RoomId { get; init; }
+        public IRoomInfo? RoomInfo { get; init; }
         [NotMapped]
         public IRoom? Room { get; init; }
 
         private bool updateNeeded;
 
-        public bool InRoom => RoomId is not null && Room is IRoom;
+        [NotMapped]
+        public bool InRoom => Room is IRoom;
+        [NotMapped]
         public bool UpdateNeeded
         {
             get => updateNeeded;

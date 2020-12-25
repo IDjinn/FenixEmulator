@@ -7,6 +7,6 @@ namespace Fenix.Networking.Messages.Outgoing.Handshake
 {
     public class PongComposer : OutgoingPacket
     {
-        public PongComposer(int value) : base(OutgoingPacketsHeader.PongComposer) => WriteInt(value);
+        public PongComposer(int value) : base(OutgoingPacketsHeader.PongComposer) => Write(value);
     }
 }

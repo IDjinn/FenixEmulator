@@ -71,27 +71,6 @@ namespace Fenix
 
         public async Task StartAsync(CancellationToken cancellationToken)
         {
-            var stopWatch = new Stopwatch();
-            var manager = provider.GetService(typeof(IItemManager)) as IItemManager;
-            stopWatch.Start();
-            var profile = await manager!.LoadItemsAsync()!;
-            stopWatch.Stop();
-            logger.LogInformation($"Passou {stopWatch.ElapsedMilliseconds}");
-            stopWatch.Reset();
-            stopWatch.Stop();
-            logger.LogInformation($"Passou {stopWatch.ElapsedMilliseconds}");
-            /*
-            var stopWatch = new Stopwatch();
-            var manager = provider.GetService(typeof(IHabboManager)) as IHabboManager;
-            stopWatch.Start();
-            var profile = await manager!.GetProfile(1)!;
-            stopWatch.Stop();
-            logger.LogInformation($"Passou {stopWatch.ElapsedMilliseconds}");
-            stopWatch.Reset();
-            stopWatch.Start();
-            var profile2 = await manager!.GetProfile(2)!;
-            stopWatch.Stop();
-            logger.LogInformation($"Passou {stopWatch.ElapsedMilliseconds}");*/
             logger.LogInformation($"Started....");
         }
 

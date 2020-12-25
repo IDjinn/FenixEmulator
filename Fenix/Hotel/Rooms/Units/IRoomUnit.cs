@@ -1,4 +1,6 @@
-﻿using Fenix.Util.Interfaces;
+﻿using Fenix.Hotel.Rooms.Floor;
+using Fenix.Util.Enums;
+using Fenix.Util.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,17 +12,18 @@ namespace Fenix.Hotel.Rooms.Units
 {
     public interface IRoomUnit
     {
-        public uint Id { get; init; }
-        public string Name { get; init; }
-        public IRoom Room { get; init; }
-        /*
-        public int X { get; init; }
-        public int Y { get; init; }
-        public int Z { get; init; }
-        */
-        public Byte BodyDirection { get; }
-        public Byte HeadDirection { get; }
-        public Byte LastBodyDirection { get; }
-        public Byte LastHeadDirection { get; }
+        public ushort Id { get; init; }
+        public string Name { get; }
+        public string? Motto { get; }
+        public string Look { get; }
+        public IRoom Room { get; }
+        public ushort X { get; }
+        public ushort Y { get; }
+        public float Z { get; }
+        public IRoomTile RoomTile { get; }
+        public Direction BodyDirection { get; }
+        public Direction HeadDirection { get; }
+        public Direction LastBodyDirection { get; }
+        public Direction LastHeadDirection { get; }
     }
 }

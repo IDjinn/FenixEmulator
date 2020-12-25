@@ -13,6 +13,8 @@ namespace Fenix.Hotel.Rooms.Units.Bots
     record RoomBot : RoomUnit, IRoomBot
     {
         public IHabboProfile Owner { get; private set; }
+        public Char Gender { get; init; }
+
         public byte DanceId { get; private set; }
 
         public bool IsDancing => DanceId > 0;
@@ -45,34 +47,34 @@ namespace Fenix.Hotel.Rooms.Units.Bots
             IdleTimestamp = 0;
         }
 
-        public IOutgoingPacket Serializable()
+        public IOutgoingPacket Serializable(IOutgoingPacket? packet = null)
         {
             return new OutgoingPacket(0)
-                .WriteUInt(Id)
-                .WriteString(Name)
-                .WriteString("Notto")
-                .WriteString("Figure")
-                .WriteUInt(Id)
-                .WriteInt(0) // X
-                .WriteInt(0) // Y
-                .WriteString(0 + "") // Z
-                .WriteByte(BodyDirection)
-                .WriteInt(4)
-                .WriteString("Gender")
-                .WriteUInt(Owner.Id)
-                .WriteString(Owner.Username ?? "Unknown")
-                .WriteInt(10)
+                .Write((uint)Id)
+                .Write(base.Name)
+                .Write(Motto ?? $"My owner is {Owner.Username}")
+                .Write(Look)
+                .Write((uint)Id)
+                .Write(X) // X
+                .Write(Y) // Y
+                .Write(Z + "") // Z
+                .Write((byte)BodyDirection)
+                .Write(4)
+                .Write(Gender)
+                .Write(Owner.Id)
+                .Write(Owner.Username ?? "Unknown")
+                .Write(10)
                 // shorts
-                .WriteInt(0)
-                .WriteInt(1)
-                .WriteInt(2)
-                .WriteInt(3)
-                .WriteInt(4)
-                .WriteInt(5)
-                .WriteInt(6)
-                .WriteInt(7)
-                .WriteInt(8)
-                .WriteInt(9);
+                .Write(0)
+                .Write(1)
+                .Write(2)
+                .Write(3)
+                .Write(4)
+                .Write(5)
+                .Write(6)
+                .Write(7)
+                .Write(8)
+                .Write(9);
         }
     }
 }

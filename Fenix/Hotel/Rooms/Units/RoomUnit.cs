@@ -1,4 +1,6 @@
-﻿using Fenix.Networking.Messages.Outgoing;
+﻿using Fenix.Hotel.Rooms.Floor;
+using Fenix.Networking.Messages.Outgoing;
+using Fenix.Util.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,9 +14,15 @@ namespace Fenix.Hotel.Rooms.Units
     {
         private static readonly object locker = new object();
 
-        public uint Id { get; init; }
-        public virtual string Name { get; init; }
+        public ushort Id { get; init; }
+        public virtual string Name { get; protected init; }
+        public virtual string? Motto { get; protected set; }
+        public virtual string Look { get; protected set; }
         public IRoom Room { get; init; }
+        public ushort X { get; private set; }
+        public ushort Y { get; private set; }
+        public float Z { get; private set; }
+        public IRoomTile RoomTile { get; private set; }
 
         private bool updateNeeded;
         public bool UpdateNeeded
@@ -29,12 +37,12 @@ namespace Fenix.Hotel.Rooms.Units
             }
         }
 
-        public byte LastBodyDirection { get; private set; }
-        public byte LastHeadDirection { get; private set; }
-        private byte bodyDirection;
-        private byte headDirection;
+        public Direction LastBodyDirection { get; private set; }
+        public Direction LastHeadDirection { get; private set; }
+        private Direction bodyDirection;
+        private Direction headDirection;
 
-        public byte BodyDirection
+        public Direction BodyDirection
         {
             get => bodyDirection;
             set
@@ -43,7 +51,7 @@ namespace Fenix.Hotel.Rooms.Units
                 bodyDirection = value;
             }
         }
-        public byte HeadDirection
+        public Direction HeadDirection
         {
             get => headDirection;
             set
@@ -53,11 +61,23 @@ namespace Fenix.Hotel.Rooms.Units
             }
         }
 
+        public RoomUnit() { }
+
         public RoomUnit(IRoom room, string name) => (Room, Name) = (room, name);
 
         public void SetUpdateNeed(bool value)
         {
             UpdateNeeded = value;
+        }
+
+        protected virtual void SetRoomTile(IRoomTile tile)
+        {
+            RoomTile = tile ?? throw new ArgumentNullException(nameof(tile), "Tile must be IRoomTile");
+        }
+
+        protected virtual IOutgoingPacket Serializable(IOutgoingPacket? packet = null)
+        {
+            return null; 
         }
     }
 }

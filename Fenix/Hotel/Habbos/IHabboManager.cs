@@ -10,7 +10,7 @@ namespace Fenix.Hotel.Habbos
 {
     interface IHabboManager
     {
-        ValueTask<IHabboProfile?> GetProfile(uint Id);
+        ValueTask<IHabboProfile?> GetProfileAsync(uint Id);
         ValueTask<IHabbo> LoadHabbo(IClient client);
     }
 }

@@ -8,20 +8,20 @@ namespace Fenix.Networking.Messages.Outgoing
 {
    public interface IOutgoingPacket : IDisposable
     {
-        public int Id { get; init; }
-        public List<byte> Buffer { get; }
+        public short Id { get; init; }
         public int Pointer { get; }
-        public IOutgoingPacket WriteBoolean(bool value);
-        public IOutgoingPacket WriteSByte(sbyte value);
-        public IOutgoingPacket WriteByte(byte value);
-        public IOutgoingPacket WriteShort(short value);
-        public IOutgoingPacket WriteInt(int value);
-        public IOutgoingPacket WriteUInt(uint value);
-        public IOutgoingPacket WriteLong(long value);
-        public IOutgoingPacket WriteULong(ulong value);
-        public IOutgoingPacket WriteFloat(float value);
-        public IOutgoingPacket WriteDouble(double value);
-        public IOutgoingPacket WriteString(string value);
+        public byte[] GetBytes();
+        public IOutgoingPacket Write(bool value);
+        public IOutgoingPacket Write(sbyte value);
+        public IOutgoingPacket Write(byte value);
+        public IOutgoingPacket Write(short value);
+        public IOutgoingPacket Write(int value);
+        public IOutgoingPacket Write(uint value);
+        public IOutgoingPacket Write(long value);
+        public IOutgoingPacket Write(ulong value);
+        public IOutgoingPacket Write(float value);
+        public IOutgoingPacket Write(double value);
+        public IOutgoingPacket Write(string value);
         public IOutgoingPacket WriteByteArray(byte[] bytes);
         public IOutgoingPacket WriteByteArray(byte[] bytes, int length);
         public IOutgoingPacket WriteByteArray(byte[] bytes, int offset, int length);

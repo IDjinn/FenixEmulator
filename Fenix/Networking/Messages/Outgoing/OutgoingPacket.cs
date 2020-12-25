@@ -10,51 +10,52 @@ namespace Fenix.Networking.Messages.Outgoing
     public class OutgoingPacket : IOutgoingPacket
     {
         private bool disposedValue;
-        public int Id { get; init; }
-        public List<byte> Buffer { get; private set; }
+        public short Id { get; init; }
+        private List<byte> Buffer { get; init; }
         public int Pointer { get; private set; } = 0;
 
-        public OutgoingPacket(int Id)
+        public OutgoingPacket(short Id)
         {
             this.Id = Id;
             Buffer = new List<byte>();
+            Write(Id);
         }
 
-        public IOutgoingPacket WriteBoolean(bool value)
+        public byte[] GetBytes()
+        {
+            var copy = new List<byte>();
+            copy.AddRange(BitConverter.GetBytes(Buffer.Count));
+            copy.Reverse();
+            copy.AddRange(Buffer);
+            return copy.ToArray();
+        }
+
+        public IOutgoingPacket Write(bool value)
         {
             Buffer[Pointer++] = value ? 1 : 0;
             return this;
         }
 
-        public IOutgoingPacket WriteSByte(sbyte value)
+        public IOutgoingPacket Write(sbyte value)
         {
             Buffer[Pointer++] = (byte)value;
             return this;
         }
 
-        public IOutgoingPacket WriteByte(byte value)
+        public IOutgoingPacket Write(byte value)
         {
             Buffer[Pointer++] = value;
             return this;
         }
 
-        public IOutgoingPacket WriteShort(short value)
+        public IOutgoingPacket Write(short value)
         {
             Buffer[Pointer++] = (byte)value;
             Buffer[Pointer++] = (byte)(value >> 8);
             return this;
         }
 
-        public IOutgoingPacket WriteInt(int value)
-        {
-            Buffer[Pointer++] = (byte)value;
-            Buffer[Pointer++] = (byte)(value >> 8);
-            Buffer[Pointer++] = (byte)(value >> 16);
-            Buffer[Pointer++] = (byte)(value >> 24);
-            return this;
-        }
-
-        public IOutgoingPacket WriteUInt(uint value)
+        public IOutgoingPacket Write(int value)
         {
             Buffer[Pointer++] = (byte)value;
             Buffer[Pointer++] = (byte)(value >> 8);
@@ -63,37 +64,46 @@ namespace Fenix.Networking.Messages.Outgoing
             return this;
         }
 
-        public IOutgoingPacket WriteLong(long value)
+        public IOutgoingPacket Write(uint value)
+        {
+            Buffer[Pointer++] = (byte)value;
+            Buffer[Pointer++] = (byte)(value >> 8);
+            Buffer[Pointer++] = (byte)(value >> 16);
+            Buffer[Pointer++] = (byte)(value >> 24);
+            return this;
+        }
+
+        public IOutgoingPacket Write(long value)
         {
             WriteByteArray(BitConverter.GetBytes(value));
             Pointer += sizeof(long);
             return this;
         }
 
-        public IOutgoingPacket WriteULong(ulong value)
+        public IOutgoingPacket Write(ulong value)
         {
             WriteByteArray(BitConverter.GetBytes(value));
             Pointer += sizeof(ulong);
             return this;
         }
 
-        public IOutgoingPacket WriteFloat(float value)
+        public IOutgoingPacket Write(float value)
         {
             WriteByteArray(BitConverter.GetBytes(value));
             Pointer += sizeof(float);
             return this;
         }
 
-        public IOutgoingPacket WriteDouble(double value)
+        public IOutgoingPacket Write(double value)
         {
             WriteByteArray(BitConverter.GetBytes(value));
             Pointer += sizeof(double);
             return this;
         }
 
-        public IOutgoingPacket WriteString(string value)
+        public IOutgoingPacket Write(string value)
         {
-            WriteInt(value.Length);
+            Write(value.Length);
             WriteByteArray(Encoding.ASCII.GetBytes(value));
             return this;
         }
@@ -135,9 +145,7 @@ namespace Fenix.Networking.Messages.Outgoing
             {
                 if (disposing)
                 {
-#pragma warning disable CS8625 // Não é possível converter um literal nulo em um tipo de referência não anulável.
-                    Buffer = null;
-#pragma warning restore CS8625 // Não é possível converter um literal nulo em um tipo de referência não anulável.
+                    Buffer.Clear();
                 }
                 disposedValue = true;
             }
