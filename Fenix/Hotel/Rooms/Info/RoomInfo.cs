@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Server.Hotel.Rooms.Info
 {
-    class RoomInfo : IRoomInfo
+    public class RoomInfo : IRoomInfo
     {
         public uint Id { get; init; }
         public string Name { get; init; }

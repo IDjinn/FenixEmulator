@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Caching.Memory;
+﻿using Api.Hotel.Items;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using Server.Database;
 using Server.Util.Cache;
@@ -25,10 +26,10 @@ namespace Server.Hotel.Items
             LoadItemsAsync();
         }
 
-        private IList<ItemData> LoadItemsAsync()
+        private async ValueTask<IList<ItemData>> LoadItemsAsync()
         {
             var items = databaseContext.ItemDatas.ToList();
-            itemDataCache.InsertAll(nameof(IItemData.Id), items, new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromHours(6)));
+            await itemDataCache.InsertAll(nameof(IItemData.Id), items, new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromHours(6)));
             return items;
         }
     }

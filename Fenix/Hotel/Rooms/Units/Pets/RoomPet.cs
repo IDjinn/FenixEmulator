@@ -1,7 +1,9 @@
-﻿using Fenix.Hotel.Habbos;
-using Fenix.Hotel.Habbos.Profile;
-using Fenix.Hotel.Rooms.Units.Util;
-using Fenix.Networking.Messages.Outgoing;
+﻿using Api.Hotel.Habbos;
+using Api.Hotel.Habbos;
+using Api.Hotel.Rooms;
+using Api.Hotel.Rooms.Units;
+using Api.Networking.Messages.Outgoing;
+using Server.Networking.Messages.Outgoing;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,8 +18,7 @@ namespace Server.Hotel.Rooms.Units.Pets
 
         public RoomPet(IRoom room, string name) : base(room, name) { }
 
-        public RoomPet(RoomUnit roomUnit) : base(roomUnit) { }
-        public RoomPet(RoomUnit roomUnit, IHabboProfile owner) : base(roomUnit) => Owner = owner;
+        public RoomPet(IRoom room, IHabboProfile owner) : base(room) => Owner = owner;
 
         public IOutgoingPacket Serializable(IOutgoingPacket? packet = null)
         {

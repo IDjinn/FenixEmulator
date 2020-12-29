@@ -1,8 +1,11 @@
-﻿using Fenix.Hotel.Habbos;
-using Fenix.Networking.Messages;
-using Fenix.Networking.Messages.Incoming;
+﻿using Api.Hotel.Habbos;
+using Api.Networking;
+using Api.Networking.Clients;
+using Api.Networking.Messages;
+using Api.Networking.Messages.Incoming;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
+using Server.Networking.Messages.Incoming;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;

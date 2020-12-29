@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Api.Hotel.Items;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -34,7 +35,5 @@ namespace Server.Hotel.Items
         public byte EffectIdMale { get; init; }
         public byte EffectIdFemale { get; init; }
         public String? ClothingOnWalk { get; init; }
-
-        public ItemData() { }
     }
 }

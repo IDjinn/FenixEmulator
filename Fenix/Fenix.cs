@@ -19,6 +19,7 @@ using Api.Util.Factories;
 using Server.Networking;
 using Server.Hotel.Rooms;
 using Server.Hotel.Items;
+using Api.Hotel.Habbos;
 
 namespace Server
 {
@@ -61,7 +62,7 @@ namespace Server
                 services.AddSingleton<ISocketManager, SocketManager>();
                 services.AddSingleton<IHabboManager, HabboManager>();
                 services.AddSingleton<IRoomManager, RoomManager>();
-                services.AddSingleton<IClientFactory, ClientFactory<Client>>();
+                services.AddSingleton<IClientFactory<Client>, ClientFactory<Client>>();
             }
             catch(Exception e) 
             { 

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Api.Util.Attributes
 {
     [AttributeUsage(AttributeTargets.Class)]
-    class NoAuth : Attribute
+    public class NoAuth : Attribute
     {
         public NoAuth()
         {

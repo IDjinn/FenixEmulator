@@ -1,4 +1,5 @@
-﻿using Api.Hotel.Rooms.Floor;
+﻿using Api.Hotel.Rooms;
+using Api.Hotel.Rooms.Floor;
 using Api.Hotel.Rooms.Info;
 using Api.Hotel.Rooms.Units;
 using Api.Networking.Messages.Outgoing;

@@ -1,6 +1,7 @@
-﻿using Fenix.Hotel.Rooms.Floor;
-using Fenix.Networking.Messages.Outgoing;
-using Fenix.Util.Enums;
+﻿using Api.Hotel.Rooms;
+using Api.Hotel.Rooms.Floor;
+using Api.Networking.Messages.Outgoing;
+using Api.Util.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -63,6 +64,7 @@ namespace Server.Hotel.Rooms.Units
 
         public RoomUnit() { }
 
+        public RoomUnit(IRoom room) => (Room) = (room);
         public RoomUnit(IRoom room, string name) => (Room, Name) = (room, name);
 
         public void SetUpdateNeed(bool value)

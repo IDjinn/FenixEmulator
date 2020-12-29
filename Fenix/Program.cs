@@ -8,9 +8,8 @@ using System.Linq;
 using Microsoft.Extensions.Hosting.Internal;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
-using Fenix.Networking;
-using Fenix.Hotel.Habbos;
-using Fenix.Database;
+using Api.Networking;
+using Api.Hotel.Habbos;
 using Microsoft.EntityFrameworkCore;
 using Pomelo.EntityFrameworkCore.MySql;
 

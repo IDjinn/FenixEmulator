@@ -1,6 +1,7 @@
-﻿using Fenix.Hotel.Rooms.Floor;
-using Fenix.Util.Enums;
-using Fenix.Util.Interfaces;
+﻿using Api.Hotel.Rooms;
+using Api.Hotel.Rooms.Floor;
+using Api.Util.Enums;
+using Api.Util.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;

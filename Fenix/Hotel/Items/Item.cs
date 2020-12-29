@@ -1,5 +1,6 @@
 ﻿using Api.Hotel.Habbos;
 using Api.Hotel.Habbos;
+using Api.Hotel.Items;
 using Api.Hotel.Rooms;
 using Api.Hotel.Rooms.Info;
 using System;
@@ -13,7 +14,7 @@ namespace Server.Hotel.Items
 {
     public abstract class Item : IItem
     {
-        private static readonly object locker = new object();
+        private readonly object locker = new object();
 
         public ushort Id { get; init; }
         public IItemData ItemData { get; init; }

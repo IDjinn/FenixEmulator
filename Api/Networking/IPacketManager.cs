@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Api.Networking
 {
-    interface IPacketManager
+    public interface IPacketManager
     {
         ValueTask<bool> Throttling(IClient client, IIncomingEvent incomingEvent);
         ValueTask HandlePacket(IClient client, IIncomingPacket packet);

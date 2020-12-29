@@ -1,4 +1,5 @@
-﻿using Fenix.Networking.Messages;
+﻿using Api.Networking;
+using Api.Networking.Messages;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
@@ -12,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Server.Networking
 {
-    class SocketManager : ISocketManager, IServiceProvider
+    class SocketManager : ISocketManager
     {
         public static int PORT { get; private set; }
         public static int BUFFER_SIZE { get; private set; }

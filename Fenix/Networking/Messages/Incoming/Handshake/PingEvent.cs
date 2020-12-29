@@ -1,8 +1,6 @@
-﻿using Fenix.Util.Attributes;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using Api.Networking.Clients;
+using Api.Networking.Messages.Incoming;
+using Api.Util.Attributes;
 using System.Threading.Tasks;
 
 namespace Server.Networking.Messages.Incoming.Handshake

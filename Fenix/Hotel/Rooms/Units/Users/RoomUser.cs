@@ -1,6 +1,8 @@
-﻿using Fenix.Hotel.Habbos;
-using Fenix.Hotel.Rooms.Units.Util;
-using Fenix.Networking.Messages.Outgoing;
+﻿using Api.Hotel.Habbos;
+using Api.Hotel.Rooms;
+using Api.Hotel.Rooms.Units;
+using Api.Networking.Messages.Outgoing;
+using Server.Networking.Messages.Outgoing;
 using System;
 using System.Collections.Generic;
 using System.Linq;

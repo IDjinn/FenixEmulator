@@ -1,5 +1,6 @@
-﻿using Fenix.Hotel.Habbos;
-using Fenix.Hotel.Rooms.Units.Users;
+﻿using Api.Hotel.Habbos;
+using Api.Hotel.Rooms;
+using Api.Hotel.Rooms.Units;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Threading.Tasks;

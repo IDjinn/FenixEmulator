@@ -1,8 +1,10 @@
-﻿using Fenix.Hotel.Habbos;
-using Fenix.Hotel.Rooms.Units.Users;
+﻿using Api.Hotel.Habbos;
+using Api.Hotel.Rooms;
+using Api.Hotel.Rooms.Units;
 using Microsoft.Build.Framework;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Server.Hotel.Rooms.Units.Users;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;

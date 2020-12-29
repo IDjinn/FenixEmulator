@@ -5,7 +5,7 @@ using System;
 
 namespace Api.Hotel.Rooms.Units
 {
-    internal interface IRoomBot : IUnitDanceable, IUnitIdleable, IPacketSerializable
+    public interface IRoomBot : IUnitDanceable, IUnitIdleable, IPacketSerializable
     {
         public IHabboProfile Owner { get; }
         public Char Gender { get; }
