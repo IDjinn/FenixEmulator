@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Fenix.Hotel.Rooms.Units.Users
+namespace Server.Hotel.Rooms.Units.Users
 {
     record RoomUser : RoomUnit, IRoomUser
     {

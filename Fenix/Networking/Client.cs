@@ -11,9 +11,9 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Fenix.Networking
+namespace Server.Networking
 {
-    public sealed class Client : IClient
+    public class Client : IClient
     {
         private bool disposedValue;
         public Guid ConnectionId { get; init; }
@@ -22,13 +22,14 @@ namespace Fenix.Networking
         public IHabbo? Habbo { get; private set; }
         public bool IsAuthentificated { get; private set; } = false;
         private ISocketManager socketManager { get; init; }
-        private ILogger logger = NullLogger.Instance;
+        private ILogger<IClient> logger { get; init; }
 
-        public Client(ISocketManager socketManager, Socket socket)
+        public Client(ILogger<IClient> logger, ISocketManager socketManager, Socket socket)
         {
             ConnectionId = Guid.NewGuid();
-            this.socket = socket;
+            this.logger = logger;
             this.socketManager = socketManager;
+            this.socket = socket;
         }
 
         public void Init()

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Fenix.Hotel.Items
+namespace Server.Hotel.Items
 {
     public record ItemData : IItemData
     {

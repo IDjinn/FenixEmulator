@@ -8,9 +8,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Fenix.Hotel.Rooms
+namespace Server.Hotel.Rooms
 {
-    public interface IRoom  : IServiceProvider
+    public interface IRoom
     {
         public uint Id { get; init; }
         public IRoomInfo RoomInfo { get; init; }

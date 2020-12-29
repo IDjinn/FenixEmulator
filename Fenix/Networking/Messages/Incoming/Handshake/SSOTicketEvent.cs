@@ -1,5 +1,5 @@
-﻿using Fenix.Hotel.Habbos;
-using Fenix.Util.Attributes;
+﻿using Api.Hotel.Habbos;
+using Api.Util.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +7,7 @@ using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Fenix.Networking.Messages.Incoming.Handshake
+namespace Server.Networking.Messages.Incoming.Handshake
 {
     [NoAuth]
     class SSOTicketEvent : IncomingEvent

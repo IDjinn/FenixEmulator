@@ -1,11 +1,10 @@
-﻿using Fenix.Hotel.Habbos;
-using Fenix.Hotel.Habbos.Profile;
-using Fenix.Hotel.Rooms;
-using Fenix.Hotel.Rooms.Info;
+﻿using Api.Hotel.Habbos;
+using Api.Hotel.Rooms;
+using Api.Hotel.Rooms.Info;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Threading.Tasks;
 
-namespace Fenix.Hotel.Items
+namespace Server.Hotel.Items
 {
     public interface IItem
     {

@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Threading.Tasks;
 
-namespace Fenix.Hotel.Rooms.Units
+namespace Server.Hotel.Rooms.Units
 {
     public interface IRoomUnitManager : IServiceProvider
     {

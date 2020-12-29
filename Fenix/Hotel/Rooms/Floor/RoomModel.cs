@@ -1,4 +1,5 @@
-﻿using Fenix.Util.Enums;
+﻿using Api.Hotel.Rooms.Floor;
+using Api.Util.Enums;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -8,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Fenix.Hotel.Rooms.Floor
+namespace Server.Hotel.Rooms.Floor
 {
     public class RoomModel : IRoomModel
     {

@@ -1,15 +1,18 @@
-﻿using Fenix.Database;
-using Fenix.Hotel.Habbos.Profile;
-using Fenix.Networking;
-using Fenix.Util.Cache;
+﻿using Server.Database;
+using Api.Hotel.Habbos;
+using Api.Networking;
+using Api.Util;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Server.Util.Cache;
+using Api.Networking.Clients;
+using Server.Hotel.Habbos.Profile;
 
-namespace Fenix.Hotel.Habbos
+namespace Server.Hotel.Habbos
 {
     sealed class HabboManager : IHabboManager
     {
@@ -24,7 +27,6 @@ namespace Fenix.Hotel.Habbos
 
         public async ValueTask<IHabboProfile?> GetProfileAsync(uint Id)
         {
-            var model = await dbContext.RoomModels.FindAsync("model_0");
             return await profileCache.GetOrCreate(Id, async() => await dbContext.HabboProfiles.FindAsync(Id));
         }
 

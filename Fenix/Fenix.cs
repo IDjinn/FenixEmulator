@@ -1,8 +1,4 @@
-﻿using Fenix.Networking;
-using Fenix.Networking.Messages.Incoming;
-using Fenix.Util;
-using Fenix.Util.Attributes;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -11,17 +7,20 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Hosting;
 using System.Threading;
-using Fenix.Database;
 using Microsoft.Extensions.DependencyInjection;
-using Fenix.Util.Cache;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Fenix.Hotel.Habbos;
-using System.Diagnostics;
-using Fenix.Hotel.Rooms;
-using Fenix.Hotel.Items;
+using Api.Networking;
+using Server.Database;
+using Api.Hotel.Items;
+using Server.Hotel.Habbos;
+using Api.Hotel.Rooms;
+using Api.Util.Factories;
+using Server.Networking;
+using Server.Hotel.Rooms;
+using Server.Hotel.Items;
 
-namespace Fenix
+namespace Server
 {
     public class Fenix : IHostedService, IServiceProvider
     {
@@ -62,6 +61,7 @@ namespace Fenix
                 services.AddSingleton<ISocketManager, SocketManager>();
                 services.AddSingleton<IHabboManager, HabboManager>();
                 services.AddSingleton<IRoomManager, RoomManager>();
+                services.AddSingleton<IClientFactory, ClientFactory<Client>>();
             }
             catch(Exception e) 
             { 

@@ -1,7 +1,7 @@
-﻿using Fenix.Database;
-using Fenix.Util.Cache;
-using Microsoft.Extensions.Caching.Memory;
+﻿using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
+using Server.Database;
+using Server.Util.Cache;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Fenix.Hotel.Items
+namespace Server.Hotel.Items
 {
     public class ItemManager : IItemManager
     {

@@ -1,10 +1,10 @@
-﻿using Fenix.Hotel.Habbos;
-using Fenix.Hotel.Habbos.Profile;
-using Fenix.Hotel.Rooms.Units.Util;
-using Fenix.Util.Interfaces;
+﻿using Api.Hotel.Habbos;
+using Api.Hotel.Habbos.Profile;
+using Api.Hotel.Rooms.Units.Util;
+using Api.Util.Interfaces;
 using System;
 
-namespace Fenix.Hotel.Rooms.Units.Bots
+namespace Server.Hotel.Rooms.Units.Bots
 {
     internal interface IRoomBot : IUnitDanceable, IUnitIdleable, IPacketSerializable
     {

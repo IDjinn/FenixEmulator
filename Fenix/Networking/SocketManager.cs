@@ -10,7 +10,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Fenix.Networking
+namespace Server.Networking
 {
     class SocketManager : ISocketManager, IServiceProvider
     {

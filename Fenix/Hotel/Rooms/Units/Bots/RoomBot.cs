@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Fenix.Hotel.Rooms.Units.Bots
+namespace Server.Hotel.Rooms.Units.Bots
 {
     record RoomBot : RoomUnit, IRoomBot
     {

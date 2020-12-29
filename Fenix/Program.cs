@@ -14,7 +14,7 @@ using Fenix.Database;
 using Microsoft.EntityFrameworkCore;
 using Pomelo.EntityFrameworkCore.MySql;
 
-namespace Fenix
+namespace Server
 {
     class Program
     {

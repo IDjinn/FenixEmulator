@@ -1,9 +1,9 @@
-﻿using Fenix.Hotel.Habbos;
-using Fenix.Hotel.Habbos.Profile;
-using Fenix.Util.Interfaces;
+﻿using Api.Hotel.Habbos;
+using Api.Hotel.Rooms.Info;
+using Api.Util.Interfaces;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Fenix.Hotel.Rooms.Info
+namespace Server.Hotel.Rooms.Info
 {
     public interface IRoomInfo : IPacketSerializable
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Fenix.Hotel.Items
+namespace Server.Hotel.Items
 {
     public interface IItemData
     {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Fenix.Hotel.Items
+namespace Server.Hotel.Items
 {
     public interface IItemManager
     {

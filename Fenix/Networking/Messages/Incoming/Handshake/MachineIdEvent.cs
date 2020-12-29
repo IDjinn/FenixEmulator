@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Fenix.Networking.Messages.Incoming.Handshake
+namespace Server.Networking.Messages.Incoming.Handshake
 {
     class MachineIdEvent : IncomingEvent
     {

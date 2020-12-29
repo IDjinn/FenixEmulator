@@ -1,11 +1,12 @@
-﻿using System;
+﻿using Api.Hotel.Habbos;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Fenix.Hotel.Habbos.Profile
+namespace Server.Hotel.Habbos.Profile
 {
     public sealed record HabboProfile : IHabboProfile
     {

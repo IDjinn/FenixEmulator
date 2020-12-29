@@ -2,7 +2,7 @@
 using Fenix.Hotel.Rooms.Units.Util;
 using Fenix.Util.Interfaces;
 
-namespace Fenix.Hotel.Rooms.Units.Users
+namespace Server.Hotel.Rooms.Units.Users
 {
     public interface IRoomUser : IUnitDanceable, IUnitIdleable, IPacketSerializable
     {

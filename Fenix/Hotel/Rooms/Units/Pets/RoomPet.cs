@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Fenix.Hotel.Rooms.Units.Pets
+namespace Server.Hotel.Rooms.Units.Pets
 {
     record RoomPet : RoomUnit, IRoomPet
     { 

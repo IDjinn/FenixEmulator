@@ -10,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Fenix.Hotel.Rooms.Units
+namespace Server.Hotel.Rooms.Units
 {
     class RoomUnitManager : IRoomUnitManager
     {

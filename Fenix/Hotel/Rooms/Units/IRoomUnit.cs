@@ -8,7 +8,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Fenix.Hotel.Rooms.Units
+namespace Server.Hotel.Rooms.Units
 {
     public interface IRoomUnit
     {

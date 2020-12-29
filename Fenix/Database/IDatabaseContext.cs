@@ -1,9 +1,10 @@
-﻿using Fenix.Hotel.Habbos.Profile;
-using Fenix.Hotel.Items;
-using Fenix.Hotel.Rooms.Floor;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using Server.Hotel.Habbos.Profile;
+using Server.Hotel.Items;
+using Server.Hotel.Rooms.Floor;
+using Server.Hotel.Rooms.Info;
 
-namespace Fenix.Database
+namespace Server.Database
 {
     public interface IDatabaseContext
     {
@@ -11,9 +12,11 @@ namespace Fenix.Database
         
         
         public DbSet<RoomModel> RoomModels { get; }
+        public DbSet<RoomInfo> RoomInfos { get; }
 
 
         public DbSet<ItemData> ItemDatas { get; }
+
 
     }
 }

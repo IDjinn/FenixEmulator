@@ -5,7 +5,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Fenix.Networking.Messages.Outgoing
+namespace Server.Networking.Messages.Outgoing
 {
     public class OutgoingPacket : IOutgoingPacket
     {

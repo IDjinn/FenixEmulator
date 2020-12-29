@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Fenix.Hotel.Rooms.Units.Util
+namespace Server.Hotel.Rooms.Units.Util
 {
     public interface IUnitDanceable
     {

@@ -3,7 +3,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Fenix.Networking.Messages.Outgoing.Handshake
+namespace Server.Networking.Messages.Outgoing.Handshake
 {
     public class PongComposer : OutgoingPacket
     {

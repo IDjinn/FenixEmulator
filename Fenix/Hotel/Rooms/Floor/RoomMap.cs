@@ -1,5 +1,7 @@
-﻿using Fenix.Hotel.Items;
-using Fenix.Hotel.Rooms.Units;
+﻿using Api.Hotel.Items;
+using Api.Hotel.Rooms;
+using Api.Hotel.Rooms.Floor;
+using Api.Hotel.Rooms.Units;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -9,7 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Fenix.Hotel.Rooms.Floor
+namespace Server.Hotel.Rooms.Floor
 {
     [NotMapped]
     public class RoomMap : IRoomMap

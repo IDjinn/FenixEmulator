@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Fenix.Networking.Messages.Incoming
+namespace Server.Networking.Messages.Incoming
 {
     // Thank you, arc morningstar
     public static class IncomingPacketsHeader
