@@ -1,14 +1,9 @@
 ﻿using Api.Hotel.Habbos;
-using Api.Hotel.Habbos;
 using Api.Hotel.Rooms;
 using Api.Hotel.Rooms.Units;
 using Api.Networking.Messages.Outgoing;
 using Server.Networking.Messages.Outgoing;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Server.Hotel.Rooms.Units.Bots
 {

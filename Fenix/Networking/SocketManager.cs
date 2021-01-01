@@ -1,5 +1,8 @@
 ﻿using Api.Networking;
+using Api.Networking.Clients;
 using Api.Networking.Messages;
+using Api.Util.Factories;
+using Api.Util.Factories.Networking;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
@@ -20,26 +23,22 @@ namespace Server.Networking
         public static int MAX_QUEUE_CONNECTIONS { get; private set; }
         public static int MAX_CONNECTIONS { get; private set; }
         private Socket socket { get; init; }
-        private ConcurrentDictionary<Guid, Client> clients { get; init; }
+        private ConcurrentDictionary<Guid, IClient> clients { get; init; }
         private ILogger<ISocketManager> logger { get; init; }
         private IServiceCollection services { get; init; }
-        private IServiceProvider provider { get; init; }
+        private IClientFactory clientFactory { get; init; }
 
-        public SocketManager(ILogger<ISocketManager> logger, int port = 100, int? bufferSize = null, int? maxQueueConnections = null, int? maxConnections = null)
+        public SocketManager(ILogger<ISocketManager> logger, IClientFactory clientFactory, int port = 100, int? bufferSize = null, int? maxQueueConnections = null, int? maxConnections = null)
         {
             this.logger = logger;
+            this.clientFactory = clientFactory;
             PORT = port;
             BUFFER_SIZE = bufferSize ?? 1024;
             MAX_QUEUE_CONNECTIONS = maxQueueConnections ?? 20;
             MAX_CONNECTIONS = maxConnections ?? 100;
 
             socket = new(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            clients = new ConcurrentDictionary<Guid, Client>();
-
-            services = new ServiceCollection();
-            services.AddLogging();
-
-            provider = services.BuildServiceProvider();
+            clients = new ConcurrentDictionary<Guid, IClient>();
 
             this.StartListener();
         }
@@ -85,7 +84,7 @@ namespace Server.Networking
                     return;
                 }
 
-                var client = new Client(this, clientSocket);
+                var client = clientFactory.Create(socket);
                 if (clients.TryAdd(client.ConnectionId, client))
                 {
                     client.Init();

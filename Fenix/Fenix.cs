@@ -15,11 +15,16 @@ using Server.Database;
 using Api.Hotel.Items;
 using Server.Hotel.Habbos;
 using Api.Hotel.Rooms;
-using Api.Util.Factories;
 using Server.Networking;
 using Server.Hotel.Rooms;
 using Server.Hotel.Items;
 using Api.Hotel.Habbos;
+using Server.Util.Factories.Networking;
+using Api.Networking.Clients;
+using Api.Util.Factories.Networking;
+using Api.Util.Factories.Hotel.Rooms;
+using Api.Util.Cache;
+using Server.Util.Cache;
 
 namespace Server
 {
@@ -62,12 +67,18 @@ namespace Server
                 services.AddSingleton<ISocketManager, SocketManager>();
                 services.AddSingleton<IHabboManager, HabboManager>();
                 services.AddSingleton<IRoomManager, RoomManager>();
-                services.AddSingleton<IClientFactory<Client>, ClientFactory<Client>>();
+
+                // Factories
+                services.AddSingleton<IClientFactory, ClientFactory<IClient>>();
+                services.AddSingleton<IRoomFactory, RoomFactory<IRoom>>();
+
+                services.AddTransient(typeof(IBaseCache<>), typeof(BaseCache<>));
+                provider = services.BuildServiceProvider();
+
             }
             catch(Exception e) 
             { 
             }
-            provider = services.BuildServiceProvider();
         }
 
         public async Task StartAsync(CancellationToken cancellationToken)

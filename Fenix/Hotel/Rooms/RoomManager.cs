@@ -2,7 +2,8 @@
 using Api.Hotel.Rooms.Floor;
 using Api.Hotel.Rooms.Info;
 using Api.Hotel.Rooms.Units;
-using Api.Util.Factories.Interfaces;
+using Api.Util.Cache;
+using Api.Util.Factories.Hotel.Rooms;
 using Microsoft.Build.Framework;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -20,19 +21,23 @@ namespace Server.Hotel.Rooms
     sealed class RoomManager : IRoomManager
     {
         private ConcurrentDictionary<uint, IRoom> loadedRooms { get; init; }
-        private BaseCache<IRoomModel> roomModelsCache { get; init; }
-        private BaseCache<IRoomInfo> rooomInfosCache { get; init; }
+        private IBaseCache<IRoomModel> roomModelsCache { get; init; }
+        private IBaseCache<IRoomInfo> rooomInfosCache { get; init; }
         private ILogger<IRoomManager> logger { get; init; }
         private IDatabaseContext databaseContext { get; init; }
         private IRoomFactory roomFactory { get; init; }
-        public RoomManager(ILogger<IRoomManager> logger, IRoomFactory roomFactory, IDatabaseContext databaseContext)
+        public RoomManager(ILogger<IRoomManager> logger,
+                           IRoomFactory roomFactory,
+                           IDatabaseContext databaseContext,
+                           IBaseCache<IRoomInfo> rooomInfosCache,
+                           IBaseCache<IRoomModel> roomModelsCache)
         {
             this.logger = logger;
             this.roomFactory = roomFactory;
             this.databaseContext = databaseContext;
-            loadedRooms = new ConcurrentDictionary<uint, IRoom>();
-            rooomInfosCache = new BaseCache<IRoomInfo>();
-            roomModelsCache = new BaseCache<IRoomModel>();
+            this.loadedRooms = new ConcurrentDictionary<uint, IRoom>();
+            this.rooomInfosCache = rooomInfosCache;
+            this.roomModelsCache = roomModelsCache;
         }
 
         public async ValueTask<IRoom?> LoadRoomAsync(uint roomId)
@@ -54,12 +59,12 @@ namespace Server.Hotel.Rooms
 
         public async ValueTask<IRoomModel?> GetRoomModelAsync(string modelName)
         {
-            return await roomModelsCache.GetOrCreate(modelName, async () => await databaseContext.RoomModels.FindAsync(modelName));
+            return await roomModelsCache.GetOrCreateAsync(modelName, async () => await databaseContext.RoomModels.FindAsync(modelName));
         }
 
         public async ValueTask<IRoomInfo?> GetRoomInfoAsync(uint roomId)
         {
-            return await rooomInfosCache.GetOrCreate(roomId, async () => await databaseContext.RoomInfos.FindAsync(roomId));
+            return await rooomInfosCache.GetOrCreateAsync(roomId, async () => await databaseContext.RoomInfos.FindAsync(roomId));
         }
     }
 }

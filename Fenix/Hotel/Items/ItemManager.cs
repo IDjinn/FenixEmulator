@@ -1,4 +1,5 @@
 ﻿using Api.Hotel.Items;
+using Api.Util.Cache;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using Server.Database;
@@ -16,20 +17,20 @@ namespace Server.Hotel.Items
     {
         private ILogger<IItemManager> logger { get; init; }
         private IDatabaseContext databaseContext { get; init; }
-        private BaseCache<IItemData> itemDataCache { get; init; }
-        public ItemManager(ILogger<IItemManager> logger, IDatabaseContext databaseContext)
+        private IBaseCache<IItemData> itemDataCache { get; init; }
+        public ItemManager(ILogger<IItemManager> logger, IDatabaseContext databaseContext, IBaseCache<IItemData> itemDataCache)
         {
             this.logger = logger;
             this.databaseContext = databaseContext;
-            itemDataCache = new BaseCache<IItemData>();
+            this.itemDataCache = itemDataCache;
 
             LoadItemsAsync();
         }
 
-        private async ValueTask<IList<ItemData>> LoadItemsAsync()
+        private async ValueTask<IList<IItemData>> LoadItemsAsync()
         {
-            var items = databaseContext.ItemDatas.ToList();
-            await itemDataCache.InsertAll(nameof(IItemData.Id), items, new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromHours(6)));
+            var items = databaseContext.ItemDatas.ToList<IItemData>();
+            await itemDataCache.InsertAllAsync(nameof(IItemData.Id), items, new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromHours(6)));
             return items;
         }
     }

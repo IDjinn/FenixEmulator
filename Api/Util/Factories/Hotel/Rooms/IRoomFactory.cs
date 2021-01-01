@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Api.Util.Factories.Interfaces
+namespace Api.Util.Factories.Hotel.Rooms
 {
     public interface IRoomFactory
     {

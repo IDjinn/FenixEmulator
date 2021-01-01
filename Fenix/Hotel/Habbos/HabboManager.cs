@@ -11,23 +11,24 @@ using System.Threading.Tasks;
 using Server.Util.Cache;
 using Api.Networking.Clients;
 using Server.Hotel.Habbos.Profile;
+using Api.Util.Cache;
 
 namespace Server.Hotel.Habbos
 {
     sealed class HabboManager : IHabboManager
     {
-        private BaseCache<IHabboProfile> profileCache { get; init; }
+        private IBaseCache<IHabboProfile> profileCache { get; init; }
         private IDatabaseContext dbContext { get; init; }
 
-        public HabboManager(IDatabaseContext dbContext)
+        public HabboManager(IDatabaseContext dbContext, IBaseCache<IHabboProfile> profileCache)
         {
-            profileCache = new BaseCache<IHabboProfile>();
+            this.profileCache = profileCache;
             this.dbContext = dbContext;
         }
 
         public async ValueTask<IHabboProfile?> GetProfileAsync(uint Id)
         {
-            return await profileCache.GetOrCreate(Id, async() => await dbContext.HabboProfiles.FindAsync(Id));
+            return await profileCache.GetOrCreateAsync(Id, async() => await dbContext.HabboProfiles.FindAsync(Id));
         }
 
         public ValueTask<IHabbo> LoadHabbo(IClient client)

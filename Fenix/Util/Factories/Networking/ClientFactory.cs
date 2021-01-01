@@ -1,4 +1,6 @@
 ﻿using Api.Networking.Clients;
+using Api.Util.Factories;
+using Api.Util.Factories.Networking;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -7,9 +9,9 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Api.Util.Factories
+namespace Server.Util.Factories.Networking
 {
-    public class ClientFactory<TClient> : IClientFactory<TClient> where TClient : class
+    public class ClientFactory<TClient> : IClientFactory where TClient : notnull, IClient
     {
         private IServiceProvider serviceProvider { get; init; }
 
@@ -18,9 +20,9 @@ namespace Api.Util.Factories
             this.serviceProvider = serviceProvider;
         }
 
-        public TClient Create(Socket socket)
+        public IClient Create(Socket socket)
         {
-            var client = ActivatorUtilities.CreateInstance<TClient>(serviceProvider, socket);
+            var client = ActivatorUtilities.CreateInstance<IClient>(serviceProvider, socket);
             return client;
         }
     }

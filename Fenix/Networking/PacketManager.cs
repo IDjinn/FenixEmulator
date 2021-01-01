@@ -3,6 +3,7 @@ using Api.Networking.Clients;
 using Api.Networking.Messages;
 using Api.Networking.Messages.Incoming;
 using Api.Util.Attributes;
+using Api.Util.Cache;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using Server.Networking.Messages.Incoming.Handshake;
@@ -21,17 +22,17 @@ namespace Server.Networking
     class PacketManager : IPacketManager
     {
         private Dictionary<int, IIncomingEvent> incomingEvents { get; init; }
-        private BaseCache<IPacketBucket> packetsBucket { get; init; }
+        private IBaseCache<IPacketBucket> packetsBucket { get; init; }
         private ILogger<IPacketManager> logger { get; init; }
 
-        public PacketManager(ILogger<IPacketManager> logger)
+        public PacketManager(ILogger<IPacketManager> logger, IBaseCache<IPacketBucket> packetsBucket)
         {
             this.logger = logger;
+            this.packetsBucket = packetsBucket;
             incomingEvents = new Dictionary<int, IIncomingEvent>()
             {
                 {0, new PingEvent() }
             };
-            packetsBucket = new BaseCache<IPacketBucket>();
         }
 
         public async ValueTask HandlePacket(IClient client, IIncomingPacket packet)
