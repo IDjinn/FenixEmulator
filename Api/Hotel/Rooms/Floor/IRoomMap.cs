@@ -1,6 +1,6 @@
-﻿using Api.Hotel.Items;
-using System.Collections.Generic;
-using System.Drawing;
+﻿using System.Drawing;
+
+using Api.Hotel.Items;
 
 namespace Api.Hotel.Rooms.Floor
 {

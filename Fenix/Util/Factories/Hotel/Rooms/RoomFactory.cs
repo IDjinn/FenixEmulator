@@ -1,15 +1,13 @@
-﻿using Api.Hotel.Rooms;
+﻿using System;
+
+using Api.Hotel.Rooms;
 using Api.Hotel.Rooms.Info;
+
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Api.Util.Factories.Hotel.Rooms
 {
-    public class RoomFactory<TRoom> : IRoomFactory where TRoom : notnull, IRoom
+    public class RoomFactory<TRoom> : IRoomFactory where TRoom : class, IRoom
     {
         private IServiceProvider serviceProvider { get; init; }
         public RoomFactory(IServiceProvider serviceProvider)

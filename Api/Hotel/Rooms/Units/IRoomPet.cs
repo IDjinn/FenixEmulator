@@ -4,7 +4,7 @@ using Api.Util.Interfaces;
 
 namespace Api.Hotel.Rooms.Units
 {
-    public interface IRoomPet : IPacketSerializable
+    public interface IRoomPet : IPacketSerializable, IRoomUnit
     {
         public IHabboProfile Owner { get; }
     }

@@ -1,0 +1,13 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Server.Networking.Messages.Outgoing.Handshake
+{
+    class SSOTicketOkComposer : OutgoingPacket
+    {
+        public SSOTicketOkComposer() : base(OutgoingPacketsHeader.SecureLoginOKComposer){}
+    }
+}

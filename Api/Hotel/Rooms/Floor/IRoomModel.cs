@@ -1,9 +1,7 @@
-﻿using Api.Util.Enums;
-using System;
-using System.Collections.ObjectModel;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.Collections.ObjectModel;
 using System.Drawing;
+
+using Api.Util.Enums;
 
 namespace Api.Hotel.Rooms.Floor
 {
@@ -14,7 +12,7 @@ namespace Api.Hotel.Rooms.Floor
         public ushort DoorY { get; init; }
         public ushort DoorZ { get; init; }
         public Direction DoorDirection { get; init; }
-        public string FloorHeigthMap { get; init; }
+        public string? FloorHeigthMap { get; init; }
         public ReadOnlyDictionary<Point, IRoomTile> FloorMap { get; }
 
 

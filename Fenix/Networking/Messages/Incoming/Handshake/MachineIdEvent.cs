@@ -1,13 +1,12 @@
-﻿using Api.Networking.Clients;
+﻿using System.Threading.Tasks;
+
+using Api.Networking.Clients;
 using Api.Networking.Messages.Incoming;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Api.Util.Attributes;
 
 namespace Server.Networking.Messages.Incoming.Handshake
 {
+    [NoAuth]
     class MachineIdEvent : IncomingEvent
     {
         public override async ValueTask Parse(IIncomingPacket packet, IClient client)

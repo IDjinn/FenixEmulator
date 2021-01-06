@@ -1,11 +1,12 @@
-﻿using Api.Hotel.Habbos;
+﻿using System;
+
+using Api.Hotel.Habbos;
 using Api.Hotel.Rooms.Units.Utils;
 using Api.Util.Interfaces;
-using System;
 
 namespace Api.Hotel.Rooms.Units
 {
-    public interface IRoomBot : IUnitDanceable, IUnitIdleable, IPacketSerializable
+    public interface IRoomBot : IUnitDanceable, IUnitIdleable, IPacketSerializable, IRoomUnit
     {
         public IHabboProfile Owner { get; }
         public Char Gender { get; }

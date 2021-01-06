@@ -1,15 +1,10 @@
 ﻿using Api.Hotel.Rooms;
 using Api.Hotel.Rooms.Info;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Api.Util.Factories.Hotel.Rooms
 {
     public interface IRoomFactory
     {
-        IRoom Create(IRoomInfo roomInfo);
+        public IRoom Create(IRoomInfo roomInfo);
     }
 }

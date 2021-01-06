@@ -1,12 +1,11 @@
-﻿using Api.Hotel.Items;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
+
+using Api.Hotel.Items;
 
 namespace Server.Hotel.Items
 {
+    [Table("items_base")]
     public record ItemData : IItemData
     {
         public uint Id { get; init; }
@@ -14,7 +13,7 @@ namespace Server.Hotel.Items
         public string FurniLine { get; init; }
         public string PublicName { get; init; }
         public string ItemName { get; init; }
-        public Char Type { get; init; }
+        public ItemType Type { get; init; }
         public byte Width { get; init; }
         public byte Length { get; init; }
         public double StackHeigth { get; init; }
@@ -27,7 +26,7 @@ namespace Server.Hotel.Items
         public bool AllowRecycle { get; init; }
         public bool AllowMarketplaceSell { get; init; }
         public bool AllowInventoryStack { get; init; }
-        public String InteractionType { get; init; }
+        public string InteractionType { get; init; }
         public byte InteractionModesCount { get; init; }
         public String? VendingIds { get; init; }
         public String? MultiHeight { get; init; }

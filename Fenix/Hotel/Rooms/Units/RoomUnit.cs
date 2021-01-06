@@ -1,24 +1,20 @@
-﻿using Api.Hotel.Rooms;
+﻿using System;
+
+using Api.Hotel.Rooms;
 using Api.Hotel.Rooms.Floor;
 using Api.Networking.Messages.Outgoing;
 using Api.Util.Enums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Server.Hotel.Rooms.Units
 {
-    record RoomUnit : IRoomUnit
+    public record RoomUnit : IRoomUnit
     {
         private static readonly object locker = new object();
 
-        public ushort Id { get; init; }
-        public virtual string Name { get; protected init; }
-        public virtual string? Motto { get; protected set; }
-        public virtual string Look { get; protected set; }
+        public ushort Id { get; protected init; }
+        public string Name { get; private set; }
+        public string? Motto { get; private set; }
+        public string Look { get; private set; }
         public IRoom Room { get; init; }
         public ushort X { get; private set; }
         public ushort Y { get; private set; }
@@ -65,7 +61,6 @@ namespace Server.Hotel.Rooms.Units
         public RoomUnit() { }
 
         public RoomUnit(IRoom room) => (Room) = (room);
-        public RoomUnit(IRoom room, string name) => (Room, Name) = (room, name);
 
         public void SetUpdateNeed(bool value)
         {
@@ -79,7 +74,22 @@ namespace Server.Hotel.Rooms.Units
 
         protected virtual IOutgoingPacket Serializable(IOutgoingPacket? packet = null)
         {
-            return null; 
+            return null;
+        }
+
+        protected void SetName(string Name)
+        {
+            this.Name = Name;
+        }
+
+        protected void SetMotto(string Motto)
+        {
+            this.Motto = Motto;
+        }
+
+        protected void SetLook(string Look)
+        {
+            this.Look = Look;
         }
     }
 }

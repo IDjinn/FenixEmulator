@@ -1,32 +1,39 @@
-﻿using Api.Hotel.Rooms.Floor;
-using Api.Util.Enums;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
+using Api.Hotel.Rooms.Floor;
+using Api.Util.Enums;
 
 namespace Server.Hotel.Rooms.Floor
 {
+    [Table("Room_Models")]
     public class RoomModel : IRoomModel
     {
+        [Key]
         public string Name { get; init; }
         public ushort DoorX { get; init; }
         public ushort DoorY { get; init; }
         public ushort DoorZ { get; init; }
         public Direction DoorDirection { get; init; }
-        public String FloorHeigthMap { get => ""; init => FloorMap = new ReadOnlyDictionary<Point, IRoomTile>(ParseFloorMap(value)); }
+        public string? FloorHeigthMap { get; init; }
         [NotMapped]
         public ReadOnlyDictionary<Point, IRoomTile> FloorMap { get; private set; }
 
-        private Dictionary<Point, IRoomTile> ParseFloorMap(string floorHeigthMap) 
+        public RoomModel()
+        {
+            FloorMap = new ReadOnlyDictionary<Point, IRoomTile>(ParseFloorMap(FloorHeigthMap));
+        }
+
+        private static Dictionary<Point, IRoomTile> ParseFloorMap(string floorHeigthMap)
         {
             var dict = new Dictionary<Point, IRoomTile>();
             string[] lines = floorHeigthMap.ToLower().Replace('\r', Convert.ToChar(13)).Split('\n');
-            for (ushort i = 0; i < lines.Length; i++) 
+            for (ushort i = 0; i < lines.Length; i++)
             {
                 for (ushort j = 0; j < floorHeigthMap.Length; j++)
                 {
@@ -35,8 +42,8 @@ namespace Server.Hotel.Rooms.Floor
 
                     char[] line = lines[j].ToArray();
                     var point = new Point(j, i);
-                    var state = line[i] == 'x' ? FloorState.BLOCKED : FloorState.OPEN;
-                    var tile = new RoomTile(j,i, ParseFloorHeight(line[i]), state);
+                    var state = line[i] is 'x' ? FloorState.BLOCKED : FloorState.OPEN;
+                    var tile = new RoomTile(j, i, ParseFloorHeight(line[i]), state);
                     dict.Add(point, tile);
                 }
             }

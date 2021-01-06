@@ -16,6 +16,8 @@
   </ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="BenchmarkDotNet" Version="0.12.1" />
+		<PackageReference Include="EntityFramework" Version="6.4.4" />
 		<PackageReference Include="Microsoft.Build" Version="16.8.0" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.1" />
 		<PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0" />
@@ -25,7 +27,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Core\" />
+	  <Folder Include="Core\Encryption\" />
 	  <Folder Include="Hotel\Catalog\" />
 	</ItemGroup>
 

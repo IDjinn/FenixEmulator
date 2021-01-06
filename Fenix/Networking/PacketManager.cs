@@ -1,21 +1,18 @@
-﻿using Api.Networking;
+﻿using System.Collections.Generic;
+using System.Reflection;
+using System.Threading.Tasks;
+
+using Api.Networking;
 using Api.Networking.Clients;
-using Api.Networking.Messages;
 using Api.Networking.Messages.Incoming;
 using Api.Util.Attributes;
 using Api.Util.Cache;
-using Microsoft.Extensions.Caching.Memory;
+
 using Microsoft.Extensions.Logging;
+
+using Server.Networking.Messages.Incoming;
 using Server.Networking.Messages.Incoming.Handshake;
-using Server.Util.Cache;
-using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
+using Server.Util;
 
 namespace Server.Networking
 {
@@ -31,13 +28,23 @@ namespace Server.Networking
             this.packetsBucket = packetsBucket;
             incomingEvents = new Dictionary<int, IIncomingEvent>()
             {
-                {0, new PingEvent() }
+                {IncomingPacketsHeader.InitDiffieHandshake, new InitCryptoEvent() },
+                {IncomingPacketsHeader.PingEvent, new PingEvent() },
+                {IncomingPacketsHeader.ReleaseVersionEvent, new ReleaseVersionEvent() },
+                {IncomingPacketsHeader.SecureLoginEvent, new SSOTicketEvent() },
+                {IncomingPacketsHeader.MachineIDEvent, new MachineIdEvent() },
+                {IncomingPacketsHeader.PolicyRequestEvent, new PolicyRequestEvent() },
             };
         }
 
         public async ValueTask HandlePacket(IClient client, IIncomingPacket packet)
         {
-            if(!incomingEvents.TryGetValue(packet.Id, out IIncomingEvent? incomingEvent))
+            if(await HandleScpecialPacket(client, packet))
+            {
+               return;
+            }
+
+            if (!incomingEvents.TryGetValue(packet.Id, out IIncomingEvent? incomingEvent))
             {
                 logger.LogInformation($"Incoming {packet.Id} not found");
                 return;
@@ -50,7 +57,7 @@ namespace Server.Networking
                 return;
             }
 
-            if (!await Throttling(client, incomingEvent))
+            if (await Throttling(client, incomingEvent) is false)
             {
                 logger.LogWarning($"Client '{client.ConnectionId}' was locked by throttling (packet {nameof(incomingEvent)})");
                 return;
@@ -63,6 +70,17 @@ namespace Server.Networking
         public async ValueTask<bool> Throttling(IClient client, IIncomingEvent incomingEvent)
         {
             return true;
+        }
+
+        public ValueTask<bool> HandleScpecialPacket(IClient client, IIncomingPacket packet)
+        {
+            if(packet.Buffer[0] == 60)
+            {
+                client.Send(Constants.POLICY_REQUEST_RESPONSE);
+                return new ValueTask<bool>(true);
+            }
+
+            return new ValueTask<bool>(false);
         }
     }
 }

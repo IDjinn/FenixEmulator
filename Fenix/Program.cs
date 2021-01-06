@@ -1,17 +1,36 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
-using Serilog;
-using Serilog.Events;
-using System;
+﻿using System;
 using System.IO;
-using System.Linq;
-using Microsoft.Extensions.Hosting.Internal;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.DependencyInjection;
-using Api.Networking;
+
 using Api.Hotel.Habbos;
+using Api.Hotel.Items;
+using Api.Hotel.Rooms;
+using Api.Hotel.Rooms.Floor;
+using Api.Hotel.Rooms.Info;
+using Api.Networking;
+using Api.Networking.Clients;
+using Api.Util.Cache;
+using Api.Util.Factories.Hotel.Habbos;
+using Api.Util.Factories.Hotel.Rooms;
+using Api.Util.Factories.Networking;
+
 using Microsoft.EntityFrameworkCore;
-using Pomelo.EntityFrameworkCore.MySql;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+
+using Serilog;
+
+using Server.Database;
+using Server.Hotel.Habbos;
+using Server.Hotel.Items;
+using Server.Hotel.Rooms;
+using Server.Hotel.Rooms.Floor;
+using Server.Hotel.Rooms.Info;
+using Server.Networking;
+using Server.Util.Cache;
+using Server.Util.Factories.Hotel.Habbos;
+using Server.Util.Factories.Networking;
 
 namespace Server
 {
@@ -19,31 +38,6 @@ namespace Server
     {
         static void Main(string[] args)
         {
-#if DEBUG
-            var logLevel = LogEventLevel.Debug;
-#else
-            var logLevel = LogEventLevel.Information;
-#endif
-
-            if (args.Contains("--verbose"))
-            {
-                logLevel = LogEventLevel.Verbose;
-            }
-            else if (args.Contains("--errors-only"))
-            {
-                logLevel = LogEventLevel.Error;
-            }
-
-            Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Is(logLevel)
-#if DEBUG
-                .MinimumLevel.Override("Microsoft", LogEventLevel.Debug)
-#else
-                .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
-#endif
-                .Enrich.FromLogContext()
-                .CreateLogger();
-
             try
             {
                 AppDomain.CurrentDomain.FirstChanceException += (sender, eventArgs) =>
@@ -51,7 +45,6 @@ namespace Server
                     Console.WriteLine(eventArgs.Exception.ToString());
                 };
                 CreateHostBuilder(args).Build().Run();
-                Console.ReadLine();
             }
             catch (Exception ex)
             {
@@ -97,6 +90,30 @@ namespace Server
                 })
                 .ConfigureServices((host, services) =>
                 {
+                    services.AddTransient<IDatabaseContext, DatabaseContext>(serviceProvider =>
+                    {
+                        return ActivatorUtilities.CreateInstance<DatabaseContext>(serviceProvider, new DbContextOptionsBuilder().UseMySql(configuration.GetConnectionString("Habbo")).Options);
+                    });
+
+                    services.AddSingleton<IItemManager, ItemManager>();
+                    services.AddSingleton<IPacketManager, PacketManager>();
+                    services.AddSingleton<ISocketManager, SocketManager>();
+                    services.AddSingleton<IHabboManager, HabboManager>();
+                    services.AddSingleton<IRoomManager, RoomManager>();
+
+                    // Factories
+                    services.AddSingleton<IClientFactory, ClientFactory<Client>>();
+                    services.AddSingleton<IRoomFactory, RoomFactory<Room>>();
+                    services.AddSingleton<IHabboFactory, HabboFactory<Habbo>>();
+
+                    //Repository
+                    services.AddSingleton<IRoomModelRepository<IRoomModel, string>, RoomModelRepository>();
+                    services.AddSingleton<IRoomInfoRepository<IRoomInfo, uint>, RoomInfoRepository>();
+
+                    services.AddTransient(typeof(IBaseCache<>), typeof(BaseCache<>));
+
+
+
                     services.AddHostedService<Fenix>();
                 })
                 .UseConsoleLifetime();

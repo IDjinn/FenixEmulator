@@ -1,24 +1,20 @@
-﻿using Api.Networking;
-using Api.Networking.Clients;
-using Api.Networking.Messages;
-using Api.Util.Factories;
-using Api.Util.Factories.Networking;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using System;
+﻿using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Text;
-using System.Threading.Tasks;
+
+using Api.Networking;
+using Api.Networking.Clients;
+using Api.Util.Factories.Networking;
+
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace Server.Networking
 {
     class SocketManager : ISocketManager
     {
-        public static int PORT { get; private set; }
+        public static int PORT { get; private set; } 
         public static int BUFFER_SIZE { get; private set; }
         public static int MAX_QUEUE_CONNECTIONS { get; private set; }
         public static int MAX_CONNECTIONS { get; private set; }
@@ -28,19 +24,17 @@ namespace Server.Networking
         private IServiceCollection services { get; init; }
         private IClientFactory clientFactory { get; init; }
 
-        public SocketManager(ILogger<ISocketManager> logger, IClientFactory clientFactory, int port = 100, int? bufferSize = null, int? maxQueueConnections = null, int? maxConnections = null)
+        public SocketManager(ILogger<ISocketManager> logger, IClientFactory clientFactory, int? port = null, int? bufferSize = null, int? maxQueueConnections = null, int? maxConnections = null)
         {
             this.logger = logger;
             this.clientFactory = clientFactory;
-            PORT = port;
+            PORT = port ?? 100;
             BUFFER_SIZE = bufferSize ?? 1024;
             MAX_QUEUE_CONNECTIONS = maxQueueConnections ?? 20;
             MAX_CONNECTIONS = maxConnections ?? 100;
 
             socket = new(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             clients = new ConcurrentDictionary<Guid, IClient>();
-
-            this.StartListener();
         }
 
         public void StartListener()
@@ -48,6 +42,7 @@ namespace Server.Networking
             socket.Bind(new IPEndPoint(IPAddress.Any, PORT));
             socket.Listen(MAX_QUEUE_CONNECTIONS);
             socket.BeginAccept(new AsyncCallback(AcceptCallback), socket);
+
             logger.LogInformation($"Listening at {PORT}");
         }
 
@@ -77,14 +72,14 @@ namespace Server.Networking
 
                 logger.LogInformation($"Connection from {clientSocket.RemoteEndPoint!.ToString() ?? "unknow endpoint"} recieved.");
 
-                if (MAX_CONNECTIONS >= clients.Count)
+                if (clients.Count >= MAX_CONNECTIONS)
                 {
-                    clientSocket.Close();
                     logger.LogInformation($"Max Number of Clients connected is reached. IP: {clientSocket.RemoteEndPoint!.ToString() ?? "unknown endpoint"} got declined.");
+                    clientSocket.Close();
                     return;
                 }
 
-                var client = clientFactory.Create(socket);
+                var client = clientFactory.Create(clientSocket);
                 if (clients.TryAdd(client.ConnectionId, client))
                 {
                     client.Init();
@@ -95,9 +90,9 @@ namespace Server.Networking
                     return;
                 }
             }
-            catch
+            catch(Exception e)
             {
-                logger.LogInformation("Error accepting connection!");
+                logger.LogError("Error accepting connection!", e);
             }
         }
 

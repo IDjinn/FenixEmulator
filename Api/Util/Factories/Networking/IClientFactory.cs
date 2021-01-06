@@ -1,5 +1,6 @@
-﻿using Api.Networking.Clients;
-using System.Net.Sockets;
+﻿using System.Net.Sockets;
+
+using Api.Networking.Clients;
 
 namespace Api.Util.Factories.Networking
 {

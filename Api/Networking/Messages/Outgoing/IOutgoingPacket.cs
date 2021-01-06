@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Api.Networking.Messages.Outgoing
 {
-   public interface IOutgoingPacket : IDisposable
+    public interface IOutgoingPacket : IDisposable
     {
         public short Id { get; init; }
         public int Pointer { get; }

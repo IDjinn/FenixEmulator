@@ -1,30 +1,26 @@
-﻿using Api.Hotel.Habbos;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Threading.Tasks;
+
 using Api.Hotel.Habbos;
 using Api.Hotel.Items;
 using Api.Hotel.Rooms;
 using Api.Hotel.Rooms.Info;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Server.Hotel.Items
 {
     public abstract class Item : IItem
     {
-        private readonly object locker = new object();
+        protected readonly object locker = new object();
 
         public ushort Id { get; init; }
         public IItemData ItemData { get; init; }
         public IHabboProfile Owner { get; init; }
         public IRoomInfo? RoomInfo { get; init; }
+
         [NotMapped]
         public IRoom? Room { get; init; }
-
+        [NotMapped]
         private bool updateNeeded;
-
         [NotMapped]
         public bool InRoom => Room is IRoom;
         [NotMapped]

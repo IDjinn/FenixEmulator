@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Server.Networking.Messages.Outgoing
+﻿namespace Server.Networking.Messages.Outgoing
 {
     public static class OutgoingPacketsHeader
     {
@@ -242,7 +236,7 @@ namespace Server.Networking.Messages.Outgoing
         public const short ItemStateComposer = 2376; // PRODUCTION-201611291003-338511768
         public const short ItemExtraDataComposer = 2547; // PRODUCTION-201611291003-338511768
         public const short PostUpdateMessageComposer = 324; // PRODUCTION-201611291003-338511768
-                                                                 //NotSure Needs Testing
+                                                            //NotSure Needs Testing
         public const short QuestionInfoComposer = short.MinValue; // PRODUCTION-201611291003-338511768
         public const short TalentTrackEmailVerifiedComposer = 612; // PRODUCTION-201611291003-338511768
         public const short TalentTrackEmailFailedComposer = 1815; // PRODUCTION-201611291003-338511768
@@ -453,19 +447,19 @@ namespace Server.Networking.Messages.Outgoing
         public const short UnknownComposer_2601 = 1663; // PRODUCTION-201611291003-338511768
         public const short UnknownComposer_2621 = 1927; // PRODUCTION-201611291003-338511768
         public const short UnknownComposer_2698 = 563; // PRODUCTION-201611291003-338511768
-                                                            //    2699;
-                                                            //    2748;
-                                                            //    2773;
-                                                            //    2964;
-                                                            //    3020;
-                                                            //    3024;
-                                                            //    3046;
-                                                            //    3124;
-                                                            //    3179;
-                                                            //    3189;
-                                                            //    328;
-                                                            //    3291;
-                                                            //    3334;
+                                                       //    2699;
+                                                       //    2748;
+                                                       //    2773;
+                                                       //    2964;
+                                                       //    3020;
+                                                       //    3024;
+                                                       //    3046;
+                                                       //    3124;
+                                                       //    3179;
+                                                       //    3189;
+                                                       //    328;
+                                                       //    3291;
+                                                       //    3334;
         public const short HabboWayQuizComposer1 = 3379;
         //    3391;
         //    3427;
@@ -475,21 +469,21 @@ namespace Server.Networking.Messages.Outgoing
         //    3581;
         //    3684;
         public const short YouTradingDisabledComposer = 3058; // PRODUCTION-201611291003-338511768
-                                                                   //    3707;
-                                                                   //    3745;
-                                                                   //    3759;
-                                                                   //    3782;
+                                                              //    3707;
+                                                              //    3745;
+                                                              //    3759;
+                                                              //    3782;
         public const short RoomFloorThicknessUpdatedComposer = 3786;
         //    3822;
         public const short CameraPurchaseSuccesfullComposer = 2783; // PRODUCTION-201611291003-338511768
         public const short CameraCompetitionStatusComposer = 133; // PRODUCTION-201611291003-338511768
-                                                                       //    3986;
-                                                                       //    467;
-                                                                       //    549;
+                                                                  //    3986;
+                                                                  //    467;
+                                                                  //    549;
         public const short CameraURLComposer = 3696; // PRODUCTION-201611291003-338511768
-                                                          //    608;
-                                                          //    624;
-                                                          //    675;
+                                                     //    608;
+                                                     //    624;
+                                                     //    675;
         public const short HotelViewCatalogPageExpiringComposer = 690;
         //    749;
         //    812;

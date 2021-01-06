@@ -1,15 +1,11 @@
-﻿using Api.Hotel.Items;
-using Api.Hotel.Rooms;
-using Api.Hotel.Rooms.Floor;
-using Api.Hotel.Rooms.Units;
-using System;
-using System.Collections.Concurrent;
+﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
+using Api.Hotel.Items;
+using Api.Hotel.Rooms;
+using Api.Hotel.Rooms.Floor;
 
 namespace Server.Hotel.Rooms.Floor
 {
@@ -19,21 +15,21 @@ namespace Server.Hotel.Rooms.Floor
         public IRoom Room { get; init; }
         public IRoomModel RoomModel { get; init; }
 
-        private ConcurrentDictionary<Point, List<IItem>> floorItems { get; init; }
-        private ConcurrentDictionary<Point, List<IRoomUnit>> tileUnits { get; init; }
+        private ConcurrentDictionary<Point, IList<IItem>> floorItems { get; init; }
+        private ConcurrentDictionary<Point, IList<IRoomUnit>> tileUnits { get; init; }
 
         public RoomMap(IRoom room, IRoomModel roomModel)
         {
             Room = room;
             RoomModel = roomModel;
 
-            floorItems = new ConcurrentDictionary<Point, List<IItem>>();
-            tileUnits = new ConcurrentDictionary<Point, List<IRoomUnit>>();
+            floorItems = new ConcurrentDictionary<Point, IList<IItem>>();
+            tileUnits = new ConcurrentDictionary<Point, IList<IRoomUnit>>();
         }
 
         public bool TryAddItemToMap(Point point, IItem item)
         {
-            if (floorItems.TryGetValue(point, out List<IItem>? items))
+            if (floorItems.TryGetValue(point, out IList<IItem>? items))
             {
                 items.Add(item);
                 return true;
@@ -49,7 +45,7 @@ namespace Server.Hotel.Rooms.Floor
 
         public bool TryRemoveItemFromMap(Point point, IItem item)
         {
-            if (floorItems.TryGetValue(point, out List<IItem>? items))
+            if (floorItems.TryGetValue(point, out IList<IItem>? items))
             {
                 for (int i = 0; i < items.Count; i++)
                 {
@@ -62,7 +58,7 @@ namespace Server.Hotel.Rooms.Floor
 
         public bool TryAddUnitToMap(Point point, IRoomUnit roomUnit)
         {
-            if (tileUnits.TryGetValue(point, out List<IRoomUnit>? units))
+            if (tileUnits.TryGetValue(point, out IList<IRoomUnit>? units))
             {
                 units.Add(roomUnit);
                 return true;
@@ -78,7 +74,7 @@ namespace Server.Hotel.Rooms.Floor
 
         public bool TryRemoveUnitFromMap(Point point, IRoomUnit roomUnit)
         {
-            if (tileUnits.TryGetValue(point, out List<IRoomUnit>? units))
+            if (tileUnits.TryGetValue(point, out IList<IRoomUnit>? units))
             {
                 for (int i = 0; i < units.Count; i++)
                 {

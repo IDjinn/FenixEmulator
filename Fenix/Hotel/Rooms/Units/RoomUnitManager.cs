@@ -1,16 +1,14 @@
-﻿using Api.Hotel.Habbos;
+﻿using System;
+using System.Collections.Concurrent;
+
+using Api.Hotel.Habbos;
 using Api.Hotel.Rooms;
 using Api.Hotel.Rooms.Units;
-using Microsoft.Build.Framework;
+
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+
 using Server.Hotel.Rooms.Units.Users;
-using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Server.Hotel.Rooms.Units
 {
@@ -20,11 +18,11 @@ namespace Server.Hotel.Rooms.Units
 
         public IRoom Room { get; init; }
         private ILogger<IRoomUnitManager> logger { get; init; }
-        private IServiceCollection services { get; init; }
-        private IServiceProvider serviceProvider { get; init; }
         private ConcurrentDictionary<uint, IRoomUnit> UnitsCoords { get; init; }
         private ushort _currentUnitId;
-        private ushort CurrentUnitId { get => _currentUnitId;
+        private ushort CurrentUnitId
+        {
+            get => _currentUnitId;
             set
             {
                 lock (locker) _currentUnitId = value;
@@ -37,32 +35,27 @@ namespace Server.Hotel.Rooms.Units
             Room = room;
 
             UnitsCoords = new ConcurrentDictionary<uint, IRoomUnit>();
-
-            services = new ServiceCollection();
-            serviceProvider = services.BuildServiceProvider();
         }
 
         public bool TryJoin(IHabbo habbo, out IRoomUser? roomUser)
         {
             roomUser = null;
             if (habbo is not IHabbo)
-                throw new ArgumentException(nameof(habbo), "Invalid argument");
+                throw new ArgumentException("Invalid argument", nameof(habbo));
 
-            for (ushort i = 0; i < UnitsCoords.Count; i++)
+            for (uint i = 0; i < UnitsCoords.Count; i++)
             {
                 IRoomUnit unit = UnitsCoords[i];
                 if (unit is IRoomUser user && user.Habbo.HabboProfile.Id == habbo.HabboProfile.Id)
                     TryRemove(unit.Id, out _);
             }
 
-            roomUser = new RoomUser
+            roomUser = new RoomUser(CurrentUnitId++, Room)
             {
-                Id = (ushort)UnitsCoords.Count,
                 Habbo = habbo,
-                Room = Room,
             };
 
-            bool sucess = UnitsCoords.TryAdd(CurrentUnitId++, (IRoomUnit)roomUser);
+            bool sucess = UnitsCoords.TryAdd(roomUser.Id, roomUser);
             if (!sucess) roomUser = null;
             return sucess;
         }
@@ -77,9 +70,5 @@ namespace Server.Hotel.Rooms.Units
             return UnitsCoords.TryRemove(roomUnitId, out roomUnit);
         }
 
-        public object? GetService(Type serviceType)
-        {
-            return serviceProvider.GetService(serviceType);
-        }
     }
 }

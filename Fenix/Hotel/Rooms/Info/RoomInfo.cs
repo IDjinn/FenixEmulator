@@ -1,34 +1,40 @@
-﻿using Api.Hotel.Habbos;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+using Api.Hotel.Habbos;
 using Api.Hotel.Rooms.Info;
 using Api.Networking.Messages.Outgoing;
+
+using Server.Database;
+using Server.Hotel.Habbos.Profile;
 using Server.Networking.Messages.Outgoing;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Server.Hotel.Rooms.Info
 {
-    public class RoomInfo : IRoomInfo
+    public record RoomInfo : IRoomInfo
     {
         public uint Id { get; init; }
         public string Name { get; init; }
         public byte Category { get; init; }
         public string? Description { get; init; }
-        public IHabboProfile Owner { get; init; }
+        public uint OwnerId { get; init; }
+        [NotMapped]
+        public IHabboProfile? Owner { get; private set; }
         public DoorAcessType DoorAcess { get; init; }
         public string? Password { get; init; }
         public ushort Rating { get; init; }
+
+        public void SetOwner(IHabboProfile? owner)
+        {
+            Owner = owner;
+        }
 
         public IOutgoingPacket Serializable(IOutgoingPacket? packet = null)
         {
             return new OutgoingPacket(0)
                 .Write(Id)
                 .Write(Name)
-                .Write(Owner.Id)
-                .Write(Owner.Username ?? "Unknown")
+                .Write(Owner?.Id ?? 0)
+                .Write(Owner?.Username ?? "Unknown")
                 .Write((byte)DoorAcess)
                 .Write((uint)20) // users now
                 .Write((uint)200) // users max

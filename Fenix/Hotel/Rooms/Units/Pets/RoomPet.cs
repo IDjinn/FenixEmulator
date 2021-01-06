@@ -1,22 +1,17 @@
 ﻿using Api.Hotel.Habbos;
-using Api.Hotel.Habbos;
 using Api.Hotel.Rooms;
 using Api.Hotel.Rooms.Units;
 using Api.Networking.Messages.Outgoing;
+
 using Server.Networking.Messages.Outgoing;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Server.Hotel.Rooms.Units.Pets
 {
     record RoomPet : RoomUnit, IRoomPet
-    { 
+    {
         public IHabboProfile Owner { get; private set; }
 
-        public RoomPet(IRoom room, string name) : base(room, name) { }
+        public RoomPet(IRoom room) : base(room) { }
 
         public RoomPet(IRoom room, IHabboProfile owner) : base(room) => Owner = owner;
 

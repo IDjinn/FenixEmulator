@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Server.Networking.Messages.Incoming
+﻿namespace Server.Networking.Messages.Incoming
 {
     // Thank you, arc morningstar
     public static class IncomingPacketsHeader
@@ -403,5 +397,7 @@ namespace Server.Networking.Messages.Incoming
         public const ushort UNKNOWN_SNOWSTORM_6024 = 6024;
         public const ushort UNKNOWN_SNOWSTORM_6025 = 6025;
         public const ushort SnowStormUserPickSnowballEvent = 6026;
+
+        public const ushort PolicyRequestEvent = 26979;
     }
 }

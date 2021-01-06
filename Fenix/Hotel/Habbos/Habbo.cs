@@ -1,19 +1,28 @@
-﻿using Api.Hotel.Habbos;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+using Api.Hotel.Habbos;
+using Api.Hotel.Rooms.Units;
 using Api.Networking.Clients;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
+using Microsoft.Extensions.Logging;
 
 namespace Server.Hotel.Habbos
 {
-
+    [NotMapped]
     public sealed record Habbo : IHabbo
     {
         public IClient Client { get; init; }
         public IHabboProfile HabboProfile { get; init; }
-        public Habbo(IClient client, IHabboProfile habboProfile) => (Client, HabboProfile) = (client, habboProfile);
+        public IRoomUser? RoomUser { get; private set; }
+        public ILogger<IHabbo> logger { get; init; }
+
+        public bool InRoom => RoomUser is IRoomUser;
+
+        public Habbo(ILogger<IHabbo> logger, IClient client, IHabboProfile habboProfile) => (this.logger, Client, HabboProfile) = (logger, client, habboProfile);
+
+        public void SetRoomUser(IRoomUser? roomUser)
+        {
+            RoomUser = roomUser;
+        }
     }
 }

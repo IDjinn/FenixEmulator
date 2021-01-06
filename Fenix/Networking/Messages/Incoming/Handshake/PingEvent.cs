@@ -1,7 +1,8 @@
-﻿using Api.Networking.Clients;
+﻿using System.Threading.Tasks;
+
+using Api.Networking.Clients;
 using Api.Networking.Messages.Incoming;
 using Api.Util.Attributes;
-using System.Threading.Tasks;
 
 namespace Server.Networking.Messages.Incoming.Handshake
 {

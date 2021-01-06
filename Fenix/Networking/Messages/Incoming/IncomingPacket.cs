@@ -1,24 +1,29 @@
-﻿using Api.Networking.Messages.Incoming;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Sockets;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
+
+using Api.Networking.Messages.Incoming;
+
+using Server.Util;
 
 namespace Server.Networking.Messages.Incoming
 {
     public class IncomingPacket : IIncomingPacket
     {
         private bool IsDisposed;
-        public int Id { get; init; }
-        public byte[] Buffer { get; private set; }
+        public int Id { get; private set; }
+        public byte[] Buffer { get; init; }
         public int Pointer { get; private set; } = 0;
+        public int AvailableBytes => Buffer.Length - Pointer;
 
         public IncomingPacket(int BufferSize)
         {
             Buffer = new byte[BufferSize];
-            Id = ReadInt();
+            //int _ = ReadInt();//message size
+        }
+
+        public void Init()
+        {
+            Pointer += sizeof(int);
+            Id = (Buffer[Pointer++] << 8) + Buffer[Pointer++];//ReadShort();
         }
 
         public byte ReadByte()
@@ -50,9 +55,10 @@ namespace Server.Networking.Messages.Incoming
 
         public int ReadInt()
         {
-            int value = BitConverter.ToInt32(Buffer, Pointer);
-            Pointer += sizeof(int);
-            return value;
+            return Buffer[Pointer++] << 24 +
+                Buffer[Pointer++] << 16 +
+                Buffer[Pointer++] << 8 +
+                Buffer[Pointer++];
         }
 
         public long ReadLong()
@@ -69,14 +75,12 @@ namespace Server.Networking.Messages.Incoming
 
         public short ReadShort()
         {
-            short value = BitConverter.ToInt16(Buffer, Pointer);
-            Pointer += sizeof(short);
-            return value;
+            return (short)(Buffer[Pointer++] << 8 + Buffer[Pointer++]);
         }
 
         public string ReadString()
         {
-            int length = ReadInt();
+            int length = ReadShort();
             string value = BitConverter.ToString(Buffer, Pointer, length);
             Pointer += length;
             return value;
@@ -109,9 +113,7 @@ namespace Server.Networking.Messages.Incoming
             {
                 if (disposing)
                 {
-#pragma warning disable CS8625 // Não é possível converter um literal nulo em um tipo de referência não anulável.
-                    Buffer = null;
-#pragma warning restore CS8625 // Não é possível converter um literal nulo em um tipo de referência não anulável.
+                   // Buffer = null;
                 }
                 IsDisposed = true;
             }

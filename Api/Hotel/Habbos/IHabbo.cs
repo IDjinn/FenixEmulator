@@ -1,10 +1,5 @@
-﻿using Api.Networking.Clients;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Api.Hotel.Rooms.Units;
+using Api.Networking.Clients;
 
 namespace Api.Hotel.Habbos
 {
@@ -12,5 +7,7 @@ namespace Api.Hotel.Habbos
     {
         public IClient Client { get; init; }
         public IHabboProfile HabboProfile { get; init; }
+        public IRoomUser? RoomUser { get; }
+        public bool InRoom { get; }
     }
 }

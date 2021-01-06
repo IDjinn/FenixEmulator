@@ -1,16 +1,13 @@
-﻿using Api.Hotel.Habbos;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
+using Api.Hotel.Habbos;
 
 namespace Server.Hotel.Habbos.Profile
 {
     public sealed record HabboProfile : IHabboProfile
     {
-        private static readonly object locker = new object();
+        private readonly object locker = new object();
 
         public uint Id { get; init; }
         public string Username { get; init; }
@@ -24,7 +21,9 @@ namespace Server.Hotel.Habbos.Profile
         public String? IpLogin { get; init; }
         public String? MachineId { get; internal set; }
 
+        [NotMapped]
         private uint credits { get; set; }
+
         public uint Credits
         {
             get => credits;

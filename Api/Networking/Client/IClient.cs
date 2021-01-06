@@ -1,10 +1,8 @@
-﻿using Api.Hotel.Habbos;
+﻿using System;
+
+using Api.Hotel.Habbos;
 using Api.Networking.Messages.Incoming;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Api.Networking.Messages.Outgoing;
 
 namespace Api.Networking.Clients
 {
@@ -15,8 +13,11 @@ namespace Api.Networking.Clients
         public string? SSO { get; }
         public IHabbo? Habbo { get; }
         public void Init();
-        public void Send(IIncomingPacket packet);
         public void SetHabbo(IHabbo? habbo);
         public void SetSSO(string? SSO);
+
+        public void Send(IOutgoingPacket packet);
+        public void Send(byte[] bytes);
+        public void Send(ReadOnlyMemory<byte> bytes);
     }
 }

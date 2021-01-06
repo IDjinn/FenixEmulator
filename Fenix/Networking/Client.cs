@@ -1,18 +1,17 @@
-﻿using Api.Hotel.Habbos;
-using Api.Networking;
-using Api.Networking.Clients;
-using Api.Networking.Messages;
-using Api.Networking.Messages.Incoming;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Abstractions;
-using Server.Networking.Messages.Incoming;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Net.Sockets;
 using System.Text;
-using System.Threading.Tasks;
+
+using Api.Hotel.Habbos;
+using Api.Networking;
+using Api.Networking.Clients;
+using Api.Networking.Messages.Incoming;
+using Api.Networking.Messages.Outgoing;
+
+using Microsoft.Extensions.Logging;
+
+using Server.Networking.Messages.Incoming;
 
 namespace Server.Networking
 {
@@ -25,20 +24,22 @@ namespace Server.Networking
         public IHabbo? Habbo { get; private set; }
         public bool IsAuthentificated { get; private set; } = false;
         private ISocketManager socketManager { get; init; }
+        private IPacketManager packetManager { get; init; }
         private ILogger<IClient> logger { get; init; }
 
-        public Client(ILogger<IClient> logger, ISocketManager socketManager, Socket socket)
+        public Client(ILogger<IClient> logger, ISocketManager socketManager, IPacketManager packetManager, Socket socket)
         {
             ConnectionId = Guid.NewGuid();
             this.logger = logger;
             this.socketManager = socketManager;
+            this.packetManager = packetManager;
             this.socket = socket;
         }
 
         public void Init()
         {
             using IIncomingPacket packet = new IncomingPacket(SocketManager.BUFFER_SIZE);
-            socket.BeginReceive(packet.Buffer, 0, packet.Buffer.Length, SocketFlags.None, new AsyncCallback(RecieveCallback), socket);
+            socket.BeginReceive(packet.Buffer, 0, packet.Buffer.Length, SocketFlags.None, new AsyncCallback(RecieveCallback), packet);
         }
 
         private void RecieveCallback(IAsyncResult asyncResult)
@@ -50,10 +51,12 @@ namespace Server.Networking
                     throw new ArgumentException(nameof(packet), "Packet muste be typeof IIncomingPacket");
 
                 int bytesRead = socket.EndReceive(asyncResult);
+
                 if (bytesRead > 0)
                 {
-                    ushort id = packet.ReadUShort();
-                    logger.LogInformation($"Id {id} packet {BitConverter.ToString(packet.Buffer)}");
+                    packet.Init();
+                    packetManager.HandlePacket(this, packet);
+                    logger.LogInformation($"Id {packet.Id} packet incoming");
                 }
             }
             catch (ArgumentException argException)
@@ -74,12 +77,18 @@ namespace Server.Networking
             }
         }
 
-        public void Send(IIncomingPacket packet)
+        public void Send(IOutgoingPacket packet)
+        {
+            logger.LogInformation($"Id {packet.Id} outgoing");
+            Send(packet.GetBytes());
+        }
+
+        public void Send(byte[] bytes)
         {
             try
             {
-                socket.BeginSend(packet.Buffer, 0, packet.Buffer.Length, SocketFlags.None, out SocketError errorCode, new AsyncCallback(SendCallback), packet);
-
+                logger.LogInformation($"Bytes {bytes.Length} size sending");
+                socket.BeginSend(bytes, 0, bytes.Length, SocketFlags.None, out SocketError errorCode, new AsyncCallback(SendCallback), null);
             }
             catch (ObjectDisposedException disposedException)
             {
@@ -92,16 +101,21 @@ namespace Server.Networking
         }
 
 
+
         private void SendCallback(IAsyncResult asyncResult)
         {
             try
             {
-                using IIncomingPacket? packet = asyncResult.AsyncState as IIncomingPacket;
+                using IOutgoingPacket? packet = asyncResult.AsyncState as IOutgoingPacket;
+                int bytesSent = socket.EndSend(asyncResult);
+
+                if (packet is null)
+                    return;
+
                 if (packet is not IIncomingPacket)
                     throw new ArgumentException(nameof(packet), "Packet muste be typeof IIncomingPacket");
 
-                int bytesSent = socket.EndSend(asyncResult);
-                Console.WriteLine("Bytes sent: " + bytesSent + " of " + packet.Buffer.Length + 4);
+                Console.WriteLine("Bytes sent: " + bytesSent + " of " + packet.GetBytes().Length);
             }
             catch (ArgumentException argException)
             {
@@ -149,13 +163,18 @@ namespace Server.Networking
 
         ~Client()
         {
-             Dispose(disposing: false);
+            Dispose(disposing: false);
         }
 
         public void Dispose()
         {
             Dispose(disposing: true);
             GC.SuppressFinalize(this);
+        }
+
+        public void Send(ReadOnlyMemory<byte> bytes)
+        {
+            Send(bytes.ToArray());
         }
     }
 }

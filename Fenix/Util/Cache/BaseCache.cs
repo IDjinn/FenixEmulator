@@ -1,12 +1,12 @@
-﻿using Api.Util.Cache;
-using Microsoft.Extensions.Caching.Memory;
-using System;
+﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+
+using Api.Util.Cache;
+
+using Microsoft.Extensions.Caching.Memory;
 
 namespace Server.Util.Cache
 {
@@ -39,7 +39,7 @@ namespace Server.Util.Cache
                         cache.Set(key, cacheEntry, options ?? defaultCacheEntryOptions);
                     }
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
 
                 }

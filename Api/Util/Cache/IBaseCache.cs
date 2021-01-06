@@ -1,13 +1,12 @@
-﻿using Microsoft.Extensions.Caching.Memory;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+
+using Microsoft.Extensions.Caching.Memory;
 
 namespace Api.Util.Cache
 {
-    public interface IBaseCache<TItem> 
+    public interface IBaseCache<TItem>
     {
         public ValueTask<TItem?> GetOrDefaultAsync(object key);
         public ValueTask InsertAllAsync<T>(string keyName, IList<T> values, MemoryCacheEntryOptions? options = null);

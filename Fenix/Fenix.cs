@@ -1,30 +1,37 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Hosting;
 using System.Threading;
-using Microsoft.Extensions.DependencyInjection;
+using System.Threading.Tasks;
+
+using Api.Hotel.Habbos;
+using Api.Hotel.Items;
+using Api.Hotel.Rooms;
+using Api.Hotel.Rooms.Floor;
+using Api.Hotel.Rooms.Info;
+using Api.Networking;
+using Api.Networking.Clients;
+using Api.Util.Cache;
+using Api.Util.Factories.Hotel.Habbos;
+using Api.Util.Factories.Hotel.Rooms;
+using Api.Util.Factories.Networking;
+
+using BenchmarkDotNet.Running;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Api.Networking;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+
 using Server.Database;
-using Api.Hotel.Items;
 using Server.Hotel.Habbos;
-using Api.Hotel.Rooms;
-using Server.Networking;
-using Server.Hotel.Rooms;
 using Server.Hotel.Items;
-using Api.Hotel.Habbos;
-using Server.Util.Factories.Networking;
-using Api.Networking.Clients;
-using Api.Util.Factories.Networking;
-using Api.Util.Factories.Hotel.Rooms;
-using Api.Util.Cache;
+using Server.Hotel.Rooms;
+using Server.Hotel.Rooms.Floor;
+using Server.Hotel.Rooms.Info;
+using Server.Networking;
 using Server.Util.Cache;
+using Server.Util.Factories.Hotel.Habbos;
+using Server.Util.Factories.Networking;
 
 namespace Server
 {
@@ -46,48 +53,33 @@ namespace Server
 ";
 
         private ISocketManager socketManager { get; init; }
+        private IItemManager itemManager { get; init; }
         private ILogger<Fenix> logger { get; init; }
         private IServiceCollection services { get; init; }
         private IServiceProvider provider { get; init; }
-        private IConfiguration config { get; init; }
 
-        public Fenix(ILogger<Fenix> logger, IConfiguration config)
+        public Fenix(ILogger<Fenix> logger, IItemManager itemManager, ISocketManager socketManager)
         {
             this.logger = logger;
-            this.config = config;
             logger.LogInformation(LOGO);
             logger.LogInformation($"\n\n\t\t\tVersion: {MAJOR}.{MINOR}.{PATCH}{(!string.IsNullOrWhiteSpace(PREVIEW) ? $"-{PREVIEW}" : "")}\n\n");
 
-            try
-            {
-                services = new ServiceCollection();
-                services.AddDbContext<IDatabaseContext, DatabaseContext>((options) => options.UseMySql(config.GetConnectionString("Habbo")));
-                services.AddLogging();
-                services.AddSingleton<IItemManager, ItemManager>();
-                services.AddSingleton<ISocketManager, SocketManager>();
-                services.AddSingleton<IHabboManager, HabboManager>();
-                services.AddSingleton<IRoomManager, RoomManager>();
 
-                // Factories
-                services.AddSingleton<IClientFactory, ClientFactory<IClient>>();
-                services.AddSingleton<IRoomFactory, RoomFactory<IRoom>>();
-
-                services.AddTransient(typeof(IBaseCache<>), typeof(BaseCache<>));
-                provider = services.BuildServiceProvider();
-
-            }
-            catch(Exception e) 
-            { 
-            }
+            this.itemManager = itemManager;
+            this.socketManager = socketManager;
         }
 
         public async Task StartAsync(CancellationToken cancellationToken)
         {
+            socketManager.StartListener();
+            BenchmarkRunner.Run<ItemManager>();
+           // await itemManager.Init();
             logger.LogInformation($"Started....");
         }
 
         public async Task StopAsync(CancellationToken cancellationToken)
         {
+            socketManager.StopListener();
             logger.LogInformation($"Stoped....");
         }
 
@@ -97,4 +89,3 @@ namespace Server
         }
     }
 }
-    

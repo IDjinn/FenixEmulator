@@ -1,16 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Api.Networking.Messages.Incoming
 {
     public interface IIncomingPacket : IDisposable
     {
-        public int Id { get; init; }
+        public int Id { get; }
         public byte[] Buffer { get; }
         public int Pointer { get; }
+        public int AvailableBytes { get; }
         public sbyte ReadSByte();
         public byte ReadByte();
         public short ReadShort();
@@ -23,5 +20,6 @@ namespace Api.Networking.Messages.Incoming
         public float ReadFloat();
         public double ReadDouble();
         public byte[] ReadBytes(int length);
+        public void Init();
     }
 }

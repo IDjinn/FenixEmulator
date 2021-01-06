@@ -1,17 +1,11 @@
 ﻿using Api.Hotel.Rooms.Floor;
 using Api.Util.Enums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Api.Hotel.Rooms
 {
     public interface IRoomUnit
     {
-        public ushort Id { get; init; }
+        public ushort Id { get; }
         public string Name { get; }
         public string? Motto { get; }
         public string Look { get; }

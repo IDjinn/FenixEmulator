@@ -1,9 +1,11 @@
-﻿using Api.Hotel.Habbos;
+﻿using System;
+
+using Api.Hotel.Habbos;
 using Api.Hotel.Rooms;
 using Api.Hotel.Rooms.Units;
 using Api.Networking.Messages.Outgoing;
+
 using Server.Networking.Messages.Outgoing;
-using System;
 
 namespace Server.Hotel.Rooms.Units.Bots
 {
@@ -20,9 +22,9 @@ namespace Server.Hotel.Rooms.Units.Bots
 
         public bool IsIdle => DateTime.Now.Ticks > IdleTimestamp;
 
-        public RoomBot(IRoom room, string name) : base(room, name) { }
+        public RoomBot(IRoom room) : base(room) { }
 
-        public RoomBot(IRoom room, IHabboProfile owner) : base(room, "") => Owner = owner;
+        public RoomBot(IRoom room, IHabboProfile owner) : base(room) => Owner = owner;
 
         public void StartDance(byte danceId)
         {

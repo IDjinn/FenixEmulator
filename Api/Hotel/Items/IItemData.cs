@@ -9,7 +9,7 @@ namespace Api.Hotel.Items
         public string FurniLine { get; init; }
         public string PublicName { get; init; }
         public string ItemName { get; init; }
-        public Char Type { get; init; }
+        public ItemType Type { get; init; }
         public byte Width { get; init; }
         public byte Length { get; init; }
         public double StackHeigth { get; init; }
@@ -22,7 +22,7 @@ namespace Api.Hotel.Items
         public bool AllowRecycle { get; init; }
         public bool AllowMarketplaceSell { get; init; }
         public bool AllowInventoryStack { get; init; }
-        public String InteractionType { get; init; }
+        public string InteractionType { get; init; }
         public byte InteractionModesCount { get; init; }
         public String? VendingIds { get; init; }
         public String? MultiHeight { get; init; }

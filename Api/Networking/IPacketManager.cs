@@ -1,10 +1,7 @@
-﻿using Api.Networking.Clients;
+﻿using System.Threading.Tasks;
+
+using Api.Networking.Clients;
 using Api.Networking.Messages.Incoming;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Api.Networking
 {
@@ -12,5 +9,6 @@ namespace Api.Networking
     {
         ValueTask<bool> Throttling(IClient client, IIncomingEvent incomingEvent);
         ValueTask HandlePacket(IClient client, IIncomingPacket packet);
+        ValueTask<bool> HandleScpecialPacket(IClient client, IIncomingPacket packet);
     }
 }

@@ -1,8 +1,8 @@
-﻿using Api.Hotel.Habbos;
+﻿using System.Threading.Tasks;
+
+using Api.Hotel.Habbos;
 using Api.Hotel.Rooms;
 using Api.Hotel.Rooms.Info;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Threading.Tasks;
 
 namespace Api.Hotel.Items
 {

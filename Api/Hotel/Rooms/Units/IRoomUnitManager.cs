@@ -1,10 +1,10 @@
-﻿using Api.Hotel.Habbos;
-using System;
-using System.Threading.Tasks;
+﻿using System;
+
+using Api.Hotel.Habbos;
 
 namespace Api.Hotel.Rooms.Units
 {
-    public interface IRoomUnitManager : IServiceProvider
+    public interface IRoomUnitManager
     {
         public IRoom Room { get; }
 
