@@ -2,12 +2,12 @@
 
 namespace Server.Networking.Messages.Incoming
 {
-    struct PacketBucket : IPacketBucket
+    public struct PacketBucket : IPacketBucket
     {
-        public ushort Tokens { get; private set; }
+        public int Tokens { get; set; }
         public long ResetBucketAt { get; init; }
 
-        public PacketBucket(ushort tokens, long resetBucketAt) => (Tokens, ResetBucketAt) = (tokens, resetBucketAt);
+        public PacketBucket(int tokens, long resetBucketAt) => (Tokens, ResetBucketAt) = (tokens, resetBucketAt);
         public PacketBucket(IPacketBucket bucket) => (Tokens, ResetBucketAt) = (bucket.Tokens, bucket.ResetBucketAt);
     }
 }

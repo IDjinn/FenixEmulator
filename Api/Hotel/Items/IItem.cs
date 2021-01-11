@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-using Api.Hotel.Habbos;
+using Api.Hotel.Habbos.Profile;
 using Api.Hotel.Rooms;
 using Api.Hotel.Rooms.Info;
 
@@ -8,15 +8,16 @@ namespace Api.Hotel.Items
 {
     public interface IItem
     {
-        public ushort Id { get; init; }
-        public IItemData ItemData { get; init; }
-        public IHabboProfile Owner { get; init; }
-        public IRoomInfo? RoomInfo { get; init; }
-        public IRoom? Room { get; init; }
+        public ulong Id { get; init; }
+        public uint OwnerId { get; init; }
+        public uint? RoomInfoId { get; init; }
+       // public uint ItemDataId { get; init; }
 
-
+        //public IHabboProfile? Owner { get; set; }
+        //public IRoomInfo? RoomInfo { get; set; }
+        public IRoom? Room { get; }
         public bool InRoom => Room is IRoom;
 
-        public abstract ValueTask Update(params object[] args);
+        public ValueTask Update(params object[] args);
     }
 }

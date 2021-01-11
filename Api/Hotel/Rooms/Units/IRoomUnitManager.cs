@@ -1,5 +1,4 @@
-﻿using System;
-
+﻿
 using Api.Hotel.Habbos;
 
 namespace Api.Hotel.Rooms.Units
@@ -11,6 +10,6 @@ namespace Api.Hotel.Rooms.Units
 
         public bool TryJoin(IHabbo habbo, out IRoomUser? roomUser);
         public bool TryAdd(IRoomUnit roomUnit);
-        public bool TryRemove(ushort roomUnitId, out IRoomUnit? roomUnit);
+        public bool TryRemove(uint roomUnitId, out IRoomUnit? roomUnit);
     }
 }

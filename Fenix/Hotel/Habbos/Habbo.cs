@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
 using Api.Hotel.Habbos;
+using Api.Hotel.Habbos.Profile;
 using Api.Hotel.Rooms.Units;
 using Api.Networking.Clients;
 

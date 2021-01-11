@@ -4,9 +4,10 @@ namespace Api.Networking.Messages.Incoming
 {
     public interface IIncomingPacket : IDisposable
     {
-        public int Id { get; }
+        public ushort Id { get; }
         public byte[] Buffer { get; }
         public int Pointer { get; }
+        public int Size { get; }
         public int AvailableBytes { get; }
         public sbyte ReadSByte();
         public byte ReadByte();
@@ -20,6 +21,7 @@ namespace Api.Networking.Messages.Incoming
         public float ReadFloat();
         public double ReadDouble();
         public byte[] ReadBytes(int length);
+        public void Clear();
         public void Init();
     }
 }

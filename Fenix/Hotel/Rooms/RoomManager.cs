@@ -4,13 +4,11 @@ using System.Threading.Tasks;
 using Api.Hotel.Rooms;
 using Api.Hotel.Rooms.Floor;
 using Api.Hotel.Rooms.Info;
-using Api.Util.Cache;
 using Api.Util.Factories.Hotel.Rooms;
 
 using Microsoft.Extensions.Logging;
 
 using Server.Database;
-using Server.Hotel.Rooms.Floor;
 
 namespace Server.Hotel.Rooms
 {
@@ -20,13 +18,13 @@ namespace Server.Hotel.Rooms
         private ILogger<IRoomManager> logger { get; init; }
         private IDatabaseContext databaseContext { get; init; }
         private IRoomFactory roomFactory { get; init; }
-        private IRoomInfoRepository<IRoomInfo, uint> roomInfoRepository { get; init; }
-        private IRoomModelRepository<IRoomModel, string> roomModelRepository { get; init; }
+        private IRoomInfoRepository roomInfoRepository { get; init; }
+        private IRoomModelRepository roomModelRepository { get; init; }
         public RoomManager(ILogger<IRoomManager> logger,
                            IRoomFactory roomFactory,
                            IDatabaseContext databaseContext,
-                           IRoomInfoRepository<IRoomInfo, uint> roomInfoRepository,
-                           IRoomModelRepository<IRoomModel, string> roomModelRepository)
+                           IRoomInfoRepository roomInfoRepository,
+                           IRoomModelRepository roomModelRepository)
         {
             this.logger = logger;
             this.roomFactory = roomFactory;
@@ -41,7 +39,7 @@ namespace Server.Hotel.Rooms
             if (loadedRooms.TryGetValue(roomId, out IRoom? cachedRoom))
                 return cachedRoom;
 
-            var roomInfo = await roomInfoRepository.Get(roomId);
+            var roomInfo = await roomInfoRepository.GetAsync(roomId);
             if (roomInfo is not IRoomInfo)
                 return null;
 

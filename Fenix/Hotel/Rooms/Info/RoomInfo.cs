@@ -1,11 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-using Api.Hotel.Habbos;
+using Api.Hotel.Habbos.Profile;
 using Api.Hotel.Rooms.Info;
 using Api.Networking.Messages.Outgoing;
 
-using Server.Database;
-using Server.Hotel.Habbos.Profile;
 using Server.Networking.Messages.Outgoing;
 
 namespace Server.Hotel.Rooms.Info

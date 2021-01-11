@@ -27,11 +27,16 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Core\Encryption\" />
 	  <Folder Include="Hotel\Catalog\" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <ProjectReference Include="..\Api\Api.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Reference Include="HabboEncryption">
+	    <HintPath>..\..\..\..\Desktop\Fenix-Emulator-master\HabboEncryption.dll</HintPath>
+	  </Reference>
 	</ItemGroup>
 </Project>

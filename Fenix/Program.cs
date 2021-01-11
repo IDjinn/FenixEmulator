@@ -2,12 +2,12 @@
 using System.IO;
 
 using Api.Hotel.Habbos;
+using Api.Hotel.Habbos.Profile;
 using Api.Hotel.Items;
 using Api.Hotel.Rooms;
 using Api.Hotel.Rooms.Floor;
 using Api.Hotel.Rooms.Info;
 using Api.Networking;
-using Api.Networking.Clients;
 using Api.Util.Cache;
 using Api.Util.Factories.Hotel.Habbos;
 using Api.Util.Factories.Hotel.Rooms;
@@ -23,6 +23,7 @@ using Serilog;
 
 using Server.Database;
 using Server.Hotel.Habbos;
+using Server.Hotel.Habbos.Profile;
 using Server.Hotel.Items;
 using Server.Hotel.Rooms;
 using Server.Hotel.Rooms.Floor;
@@ -92,7 +93,9 @@ namespace Server
                 {
                     services.AddTransient<IDatabaseContext, DatabaseContext>(serviceProvider =>
                     {
-                        return ActivatorUtilities.CreateInstance<DatabaseContext>(serviceProvider, new DbContextOptionsBuilder().UseMySql(configuration.GetConnectionString("Habbo")).Options);
+                        return ActivatorUtilities.CreateInstance<DatabaseContext>(serviceProvider,
+                            new DbContextOptionsBuilder()
+                            .UseMySql(configuration.GetConnectionString("Habbo")).Options); 
                     });
 
                     services.AddSingleton<IItemManager, ItemManager>();
@@ -107,8 +110,12 @@ namespace Server
                     services.AddSingleton<IHabboFactory, HabboFactory<Habbo>>();
 
                     //Repository
-                    services.AddSingleton<IRoomModelRepository<IRoomModel, string>, RoomModelRepository>();
-                    services.AddSingleton<IRoomInfoRepository<IRoomInfo, uint>, RoomInfoRepository>();
+                    services.AddSingleton<IRoomModelRepository, RoomModelRepository>();
+                    services.AddSingleton<IRoomInfoRepository, RoomInfoRepository>();
+                    services.AddSingleton<IItemRepository, ItemRepository>();
+                    services.AddSingleton<IHabboProfileRepository, HabboProfileRepository>();
+                    services.AddSingleton<IItemDataRepository<ItemData, ushort>, ItemDataRepository>();
+                    services.AddSingleton<IItemRepository, ItemRepository>();
 
                     services.AddTransient(typeof(IBaseCache<>), typeof(BaseCache<>));
 

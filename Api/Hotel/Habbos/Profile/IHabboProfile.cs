@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Api.Hotel.Habbos
+namespace Api.Hotel.Habbos.Profile
 {
     public interface IHabboProfile
     {
@@ -16,5 +16,6 @@ namespace Api.Hotel.Habbos
         public String? IpRegister { get; init; }
         public String? IpLogin { get; init; }
         public String? MachineId { get; }
+        public string SSO { get; }
     }
 }

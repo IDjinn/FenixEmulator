@@ -34,5 +34,7 @@ namespace Server.Hotel.Items
         public byte EffectIdMale { get; init; }
         public byte EffectIdFemale { get; init; }
         public String? ClothingOnWalk { get; init; }
+
+        public ItemData() { }
     }
 }

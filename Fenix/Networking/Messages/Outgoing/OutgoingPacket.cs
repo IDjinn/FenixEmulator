@@ -31,44 +31,44 @@ namespace Server.Networking.Messages.Outgoing
 
         public IOutgoingPacket Write(bool value)
         {
-            Buffer[Pointer++] = value ? 1 : 0;
+            Buffer.Add(value ? 1 : 0);
             return this;
         }
 
         public IOutgoingPacket Write(sbyte value)
         {
-            Buffer[Pointer++] = (byte)value;
+            Buffer.Add((byte)value);
             return this;
         }
 
         public IOutgoingPacket Write(byte value)
         {
-            Buffer[Pointer++] = value;
+            Buffer.Add(value);
             return this;
         }
 
         public IOutgoingPacket Write(short value)
         {
-            Buffer[Pointer++] = (byte)value;
-            Buffer[Pointer++] = (byte)(value >> 8);
+            Buffer.Add((byte)value);
+            Buffer.Add((byte)(value >> 8));
             return this;
         }
 
         public IOutgoingPacket Write(int value)
         {
-            Buffer[Pointer++] = (byte)value;
-            Buffer[Pointer++] = (byte)(value >> 8);
-            Buffer[Pointer++] = (byte)(value >> 16);
-            Buffer[Pointer++] = (byte)(value >> 24);
+            Buffer.Add((byte)value);
+            Buffer.Add((byte)(value >> 8));
+            Buffer.Add((byte)(value >> 16));
+            Buffer.Add((byte)(value >> 24));
             return this;
         }
 
         public IOutgoingPacket Write(uint value)
         {
-            Buffer[Pointer++] = (byte)value;
-            Buffer[Pointer++] = (byte)(value >> 8);
-            Buffer[Pointer++] = (byte)(value >> 16);
-            Buffer[Pointer++] = (byte)(value >> 24);
+            Buffer.Add((byte)value);
+            Buffer.Add((byte)(value >> 8));
+            Buffer.Add((byte)(value >> 16));
+            Buffer.Add((byte)(value >> 24));
             return this;
         }
 

@@ -24,7 +24,7 @@ namespace Server.Hotel.Rooms.Units.Users
             this.Id = Id;
         }
 
-        public RoomUser(ushort id, IHabbo habbo, IRoom room, string name, string motto, string look) : base(room) 
+        public RoomUser(ushort id, IHabbo habbo, IRoom room, string name, string motto, string look) : base(room)
         {
             Id = id;
             Habbo = habbo;

@@ -17,7 +17,8 @@ namespace Server.Database
 
 
         public DbSet<ItemData> ItemDatas { get; }
-
-
+        //
+        
+        public DbSet<Item> Items { get; }
     }
 }

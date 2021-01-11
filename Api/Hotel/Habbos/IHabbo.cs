@@ -1,4 +1,5 @@
-﻿using Api.Hotel.Rooms.Units;
+﻿using Api.Hotel.Habbos.Profile;
+using Api.Hotel.Rooms.Units;
 using Api.Networking.Clients;
 
 namespace Api.Hotel.Habbos

@@ -7,21 +7,19 @@ using Api.Networking;
 using Api.Networking.Clients;
 using Api.Util.Factories.Networking;
 
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 namespace Server.Networking
 {
     class SocketManager : ISocketManager
     {
-        public static int PORT { get; private set; } 
+        public static int PORT { get; private set; }
         public static int BUFFER_SIZE { get; private set; }
         public static int MAX_QUEUE_CONNECTIONS { get; private set; }
         public static int MAX_CONNECTIONS { get; private set; }
         private Socket socket { get; init; }
         private ConcurrentDictionary<Guid, IClient> clients { get; init; }
         private ILogger<ISocketManager> logger { get; init; }
-        private IServiceCollection services { get; init; }
         private IClientFactory clientFactory { get; init; }
 
         public SocketManager(ILogger<ISocketManager> logger, IClientFactory clientFactory, int? port = null, int? bufferSize = null, int? maxQueueConnections = null, int? maxConnections = null)
@@ -41,7 +39,7 @@ namespace Server.Networking
         {
             socket.Bind(new IPEndPoint(IPAddress.Any, PORT));
             socket.Listen(MAX_QUEUE_CONNECTIONS);
-            socket.BeginAccept(new AsyncCallback(AcceptCallback), socket);
+            socket.BeginAccept(new AsyncCallback(AcceptCallback), null);
 
             logger.LogInformation($"Listening at {PORT}");
         }
@@ -56,20 +54,13 @@ namespace Server.Networking
         {
             try
             {
-                Socket? serverSocket = asyncResult.AsyncState as Socket;
-                if (serverSocket is not Socket)
-                {
-                    throw new ArgumentNullException(nameof(serverSocket), "Server socket cannot be null");
-                }
-
-                Socket? clientSocket = serverSocket.EndAccept(asyncResult);
+                Socket? clientSocket = socket.EndAccept(asyncResult);
                 if (clientSocket is not Socket)
                 {
                     throw new ArgumentNullException(nameof(clientSocket), "Client socket cannot be null");
                 }
 
-                serverSocket.BeginAccept(new AsyncCallback(AcceptCallback), serverSocket);
-
+                socket.BeginAccept(new AsyncCallback(AcceptCallback), null);
                 logger.LogInformation($"Connection from {clientSocket.RemoteEndPoint!.ToString() ?? "unknow endpoint"} recieved.");
 
                 if (clients.Count >= MAX_CONNECTIONS)
@@ -90,15 +81,10 @@ namespace Server.Networking
                     return;
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 logger.LogError("Error accepting connection!", e);
             }
-        }
-
-        public object? GetService(Type serviceType)
-        {
-            throw new NotImplementedException();
         }
     }
 }

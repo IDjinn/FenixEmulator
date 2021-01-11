@@ -1,6 +1,7 @@
 ﻿using System;
 
 using Api.Hotel.Habbos;
+using Api.Hotel.Habbos.Profile;
 using Api.Networking.Clients;
 using Api.Util.Factories.Hotel.Habbos;
 

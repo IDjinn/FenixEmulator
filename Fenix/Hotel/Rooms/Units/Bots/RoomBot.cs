@@ -1,6 +1,6 @@
 ﻿using System;
 
-using Api.Hotel.Habbos;
+using Api.Hotel.Habbos.Profile;
 using Api.Hotel.Rooms;
 using Api.Hotel.Rooms.Units;
 using Api.Networking.Messages.Outgoing;

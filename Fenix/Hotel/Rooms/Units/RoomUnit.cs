@@ -1,5 +1,4 @@
-﻿using System;
-
+﻿
 using Api.Hotel.Rooms;
 using Api.Hotel.Rooms.Floor;
 using Api.Networking.Messages.Outgoing;
@@ -9,7 +8,7 @@ namespace Server.Hotel.Rooms.Units
 {
     public record RoomUnit : IRoomUnit
     {
-        private static readonly object locker = new object();
+        protected readonly object locker = new object();
 
         public ushort Id { get; protected init; }
         public string Name { get; private set; }
@@ -27,10 +26,7 @@ namespace Server.Hotel.Rooms.Units
             get => updateNeeded;
             set
             {
-                lock (locker)
-                {
-                    updateNeeded = value;
-                }
+                lock (locker) updateNeeded = value;
             }
         }
 
@@ -69,7 +65,7 @@ namespace Server.Hotel.Rooms.Units
 
         protected virtual void SetRoomTile(IRoomTile tile)
         {
-            RoomTile = tile ?? throw new ArgumentNullException(nameof(tile), "Tile must be IRoomTile");
+            RoomTile = tile;
         }
 
         protected virtual IOutgoingPacket Serializable(IOutgoingPacket? packet = null)

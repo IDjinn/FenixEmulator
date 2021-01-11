@@ -7,11 +7,11 @@ using Api.Util.Attributes;
 namespace Server.Networking.Messages.Incoming.Handshake
 {
     [NoAuth]
-    class PingEvent : IncomingEvent
+    internal class PingEvent : IIncomingEvent
     {
-        public override async ValueTask Parse(IIncomingPacket packet, IClient client)
+        public ValueTask Execute(IIncomingPacket packet, IClient client)
         {
-            await base.Parse(packet, client);
+            return default;
         }
     }
 }

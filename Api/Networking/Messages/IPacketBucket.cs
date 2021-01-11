@@ -2,7 +2,7 @@
 {
     public interface IPacketBucket
     {
-        public ushort Tokens { get; }
+        public int Tokens { get; set; }
         public long ResetBucketAt { get; init; }
     }
 }

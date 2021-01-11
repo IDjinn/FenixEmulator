@@ -2,28 +2,33 @@
 
 using Api.Networking.Messages.Incoming;
 
-using Server.Util;
-
 namespace Server.Networking.Messages.Incoming
 {
     public class IncomingPacket : IIncomingPacket
     {
         private bool IsDisposed;
-        public int Id { get; private set; }
+        public ushort Id { get; private set; }
         public byte[] Buffer { get; init; }
         public int Pointer { get; private set; } = 0;
-        public int AvailableBytes => Buffer.Length - Pointer;
+        public int Size { get; private set; } = 0;
+        public int AvailableBytes => Size - Pointer;
 
-        public IncomingPacket(int BufferSize)
+        public IncomingPacket(int bufferSize)
         {
-            Buffer = new byte[BufferSize];
-            //int _ = ReadInt();//message size
+            Buffer = new byte[bufferSize];
         }
 
         public void Init()
         {
-            Pointer += sizeof(int);
-            Id = (Buffer[Pointer++] << 8) + Buffer[Pointer++];//ReadShort();
+            Size = ReadInt();
+            Id = (ushort)ReadShort();
+        }
+
+        public void Clear()
+        {
+            Array.Clear(Buffer, 0, Buffer.Length);
+            Id = 0;
+            Pointer = 0;
         }
 
         public byte ReadByte()
@@ -55,9 +60,9 @@ namespace Server.Networking.Messages.Incoming
 
         public int ReadInt()
         {
-            return Buffer[Pointer++] << 24 +
-                Buffer[Pointer++] << 16 +
-                Buffer[Pointer++] << 8 +
+            return (Buffer[Pointer++] << 24) +
+                (Buffer[Pointer++] << 16) +
+                (Buffer[Pointer++] << 8) +
                 Buffer[Pointer++];
         }
 
@@ -75,7 +80,7 @@ namespace Server.Networking.Messages.Incoming
 
         public short ReadShort()
         {
-            return (short)(Buffer[Pointer++] << 8 + Buffer[Pointer++]);
+            return (short)((Buffer[Pointer++] << 8) + Buffer[Pointer++]);
         }
 
         public string ReadString()
@@ -113,7 +118,7 @@ namespace Server.Networking.Messages.Incoming
             {
                 if (disposing)
                 {
-                   // Buffer = null;
+                    Clear();
                 }
                 IsDisposed = true;
             }

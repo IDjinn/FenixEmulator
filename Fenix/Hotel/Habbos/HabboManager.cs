@@ -1,52 +1,44 @@
-﻿using System.Collections.Concurrent;
+﻿using System;
+using System.Collections.Concurrent;
 using System.Threading.Tasks;
 
 using Api.Hotel.Habbos;
+using Api.Hotel.Habbos.Profile;
 using Api.Networking.Clients;
-using Api.Util.Cache;
 using Api.Util.Factories.Hotel.Habbos;
-
-using Server.Database;
 
 namespace Server.Hotel.Habbos
 {
     sealed class HabboManager : IHabboManager
     {
-        private IBaseCache<IHabboProfile> profileCache { get; init; }
-        private IDatabaseContext dbContext { get; init; }
         private IHabboFactory habboFactory { get; init; }
         private ConcurrentDictionary<uint, IHabbo> onlineUsers { get; init; }
+        private IHabboProfileRepository habboProfileRepository { get; init; }
 
-        public HabboManager(IDatabaseContext dbContext, IBaseCache<IHabboProfile> profileCache, IHabboFactory habboFactory)
+        public HabboManager(IHabboProfileRepository habboProfileRepository, IHabboFactory habboFactory)
         {
             onlineUsers = new ConcurrentDictionary<uint, IHabbo>();
-            this.profileCache = profileCache;
-            this.dbContext = dbContext;
+            this.habboProfileRepository = habboProfileRepository;
             this.habboFactory = habboFactory;
         }
 
-        public async ValueTask<IHabboProfile?> GetProfileAsync(uint Id)
+        public async ValueTask<IHabbo?> Login(IClient client)
         {
-            return await profileCache.GetOrCreateAsync(Id, async () => await dbContext.HabboProfiles.FindAsync(Id));
-        }
-
-        public ValueTask<IHabbo> LoadHabbo(IClient client, IHabboProfile habboProfile)
-        {/* TODO: Remove this
             if (!client.IsAuthentificated)
                 throw new InvalidOperationException($"Not authenticated. '{nameof(client.IsAuthentificated)}' must be true for LoadHabbo.");
 
-            if(string.IsNullOrEmpty(client.SSO))
+            if (string.IsNullOrEmpty(client.SSO))
                 throw new ArgumentException("Invalid SSO.");
 
             if (client.Habbo is IHabbo habbo)
-                return new ValueTask<IHabbo>(habbo);
+                return habbo;
 
-            var userProfile = new HabboProfile();
-            habbo = new Habbo(client, userProfile);
-            client.SetHabbo(habbo);
-            */
+            var profile = await habboProfileRepository.FindHabboBySSO(client.SSO);
+            if (profile is not IHabboProfile)
+                throw new ArgumentException("Invalid SSO.");
 
-            return new ValueTask<IHabbo>(habboFactory.Create(client, habboProfile));
+            return habboFactory.Create(client, profile);
         }
+
     }
 }

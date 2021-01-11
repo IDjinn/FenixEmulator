@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations.Schema;
 
-using Api.Hotel.Habbos;
+using Api.Hotel.Habbos.Profile;
 
 namespace Server.Hotel.Habbos.Profile
 {
@@ -20,6 +20,7 @@ namespace Server.Hotel.Habbos.Profile
         public String? IpRegister { get; init; }
         public String? IpLogin { get; init; }
         public String? MachineId { get; internal set; }
+        public string SSO { get; }
 
         [NotMapped]
         private uint credits { get; set; }

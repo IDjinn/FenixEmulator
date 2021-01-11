@@ -1,4 +1,4 @@
-﻿using Api.Hotel.Habbos;
+﻿using Api.Hotel.Habbos.Profile;
 using Api.Util.Interfaces;
 
 namespace Api.Hotel.Rooms.Info

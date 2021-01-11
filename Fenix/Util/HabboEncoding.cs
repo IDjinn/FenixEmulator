@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Serbyteser.Util
+﻿namespace Serbyteser.Util
 {
-   public static class HabboEncoding
+    public static class HabboEncoding
     {
         public static int DecodeInt(byte[] bytes)
         {

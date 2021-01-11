@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Net.Sockets;
-using System.Text;
 
 using Api.Hotel.Habbos;
 using Api.Networking;
@@ -11,6 +9,7 @@ using Api.Networking.Messages.Outgoing;
 
 using Microsoft.Extensions.Logging;
 
+using Server.Core.Encryption.Crypto.Prng;
 using Server.Networking.Messages.Incoming;
 
 namespace Server.Networking
@@ -20,6 +19,7 @@ namespace Server.Networking
         private bool disposedValue;
         public Guid ConnectionId { get; init; }
         private Socket socket { get; init; }
+        public object? ARC4 { get; private set; }
         public string? SSO { get; private set; }
         public IHabbo? Habbo { get; private set; }
         public bool IsAuthentificated { get; private set; } = false;
@@ -54,10 +54,16 @@ namespace Server.Networking
 
                 if (bytesRead > 0)
                 {
+                    if (ARC4 is ARC4 arc4)
+                    {
+                        //arc4.Decrypt(ref packet.Buffer);
+                    }
                     packet.Init();
                     packetManager.HandlePacket(this, packet);
-                    logger.LogInformation($"Id {packet.Id} packet incoming");
                 }
+
+                packet.Clear();
+                socket.BeginReceive(packet.Buffer, 0, packet.Buffer.Length, SocketFlags.None, new AsyncCallback(RecieveCallback), packet);
             }
             catch (ArgumentException argException)
             {
@@ -137,13 +143,18 @@ namespace Server.Networking
 
         public void SetHabbo(IHabbo? habbo)
         {
-            IsAuthentificated = habbo is IHabbo;
             Habbo = habbo;
         }
 
         public void SetSSO(string? SSO)
         {
+            IsAuthentificated = string.IsNullOrWhiteSpace(SSO) is false;
             this.SSO = SSO;
+        }
+
+        public void SetARC4(object? arc4)
+        {
+            ARC4 = arc4;
         }
 
         public void Dispose(bool disposing)

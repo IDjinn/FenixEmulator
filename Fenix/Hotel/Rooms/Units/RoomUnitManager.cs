@@ -5,7 +5,6 @@ using Api.Hotel.Habbos;
 using Api.Hotel.Rooms;
 using Api.Hotel.Rooms.Units;
 
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 using Server.Hotel.Rooms.Units.Users;
@@ -65,7 +64,7 @@ namespace Server.Hotel.Rooms.Units
             return UnitsCoords.TryAdd(roomUnit.Id, roomUnit);
         }
 
-        public bool TryRemove(ushort roomUnitId, out IRoomUnit? roomUnit)
+        public bool TryRemove(uint roomUnitId, out IRoomUnit? roomUnit)
         {
             return UnitsCoords.TryRemove(roomUnitId, out roomUnit);
         }

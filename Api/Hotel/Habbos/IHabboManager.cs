@@ -6,7 +6,6 @@ namespace Api.Hotel.Habbos
 {
     public interface IHabboManager
     {
-        ValueTask<IHabboProfile?> GetProfileAsync(uint Id);
-        ValueTask<IHabbo> LoadHabbo(IClient client, IHabboProfile habboProfile);
+        public ValueTask<IHabbo?> Login(IClient client);
     }
 }

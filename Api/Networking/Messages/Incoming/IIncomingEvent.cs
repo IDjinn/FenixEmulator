@@ -6,7 +6,6 @@ namespace Api.Networking.Messages.Incoming
 {
     public interface IIncomingEvent
     {
-        public IPacketBucket? Bucket { get; }
-        ValueTask Parse(IIncomingPacket packet, IClient client);
+        public ValueTask Execute(IIncomingPacket packet, IClient client);
     }
 }

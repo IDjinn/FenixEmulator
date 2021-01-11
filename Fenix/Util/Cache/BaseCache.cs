@@ -51,9 +51,39 @@ namespace Server.Util.Cache
             return cacheEntry;
         }
 
+        public async ValueTask<TItem?> GetAsyncOrCreate(object key, Func<TItem> createItem, MemoryCacheEntryOptions? options = null)
+        {
+            if (!cache.TryGetValue(key, out TItem? cacheEntry))
+            {
+                SemaphoreSlim @lock = locks.GetOrAdd(key, k => new SemaphoreSlim(1, 1));
+                await @lock.WaitAsync();
+                try
+                {
+                    if (!cache.TryGetValue(key, out cacheEntry))
+                    {
+                        cacheEntry = createItem();
+                        cache.Set(key, cacheEntry, options ?? defaultCacheEntryOptions);
+                    }
+                }
+                catch (Exception e)
+                {
+
+                }
+                finally
+                {
+                    @lock.Release();
+                }
+            }
+            return cacheEntry;
+        }
+
+
         public async ValueTask InsertAllAsync<T>(string keyName, IList<T> values, MemoryCacheEntryOptions? options = null)
         {
             var keyProperty = typeof(T).GetProperty(keyName);
+            if (keyProperty is null)
+                throw new ArgumentNullException(nameof(keyProperty));
+
             for (int i = 0; i < values.Count; i++)
             {
                 lock (locker)

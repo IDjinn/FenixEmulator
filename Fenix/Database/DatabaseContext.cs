@@ -1,8 +1,5 @@
-﻿using System.Collections.Generic;
-
+﻿
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
 
 using Server.Hotel.Habbos.Profile;
 using Server.Hotel.Items;
@@ -13,7 +10,7 @@ namespace Server.Database
 {
     public class DatabaseContext : DbContext, IDatabaseContext
     {
-
+        public DatabaseContext() { }
         public DatabaseContext(DbContextOptions options) : base(options)
         {
         }
@@ -22,10 +19,13 @@ namespace Server.Database
         public DbSet<RoomModel> RoomModels { get; protected set; }
         public DbSet<ItemData> ItemDatas { get; protected set; }
         public DbSet<RoomInfo> RoomInfos { get; protected set; }
+        // 
+        
+        public DbSet<Item> Items { get; protected set; }
 
-        protected internal virtual void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
+        protected internal virtual void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
             base.OnConfiguring(optionsBuilder);
-
             //optionsBuilder.UseMySql(configuration.GetConnectionString("Habbo"));
         }
 
@@ -33,8 +33,9 @@ namespace Server.Database
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<RoomInfo>(buildAction =>
+            modelBuilder.Entity<ItemData>(buildAction =>
             {
+                buildAction.ToTable("items_base").HasKey(model => model.Id);
             });
             /*
             var profiles = new List<HabboProfile>()

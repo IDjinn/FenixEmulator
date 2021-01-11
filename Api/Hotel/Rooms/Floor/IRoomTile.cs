@@ -1,9 +1,8 @@
-﻿using System;
-using System.Drawing;
+﻿using System.Drawing;
 
 namespace Api.Hotel.Rooms.Floor
 {
-    public interface IRoomTile 
+    public interface IRoomTile
     {
         public ushort X { get; init; }
         public ushort Y { get; init; }
