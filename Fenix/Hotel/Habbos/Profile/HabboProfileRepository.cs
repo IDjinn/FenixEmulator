@@ -35,9 +35,9 @@ namespace Server.Hotel.Habbos.Profile
             throw new NotImplementedException();
         }
 
-        public ValueTask<IHabboProfile?> GetAsync(uint key)
+        public async ValueTask<IHabboProfile?> GetAsync(uint key)
         {
-            throw new NotImplementedException();
+            return await profilesCache.GetOrCreateAsync(key, async () => await databaseContext.HabboProfiles.FindAsync(key));
         }
 
         public ValueTask<IHabboProfile> UpdateAsync(IHabboProfile product)

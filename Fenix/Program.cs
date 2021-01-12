@@ -19,8 +19,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-using Serilog;
-
 using Server.Database;
 using Server.Hotel.Habbos;
 using Server.Hotel.Habbos.Profile;
@@ -39,22 +37,7 @@ namespace Server
     {
         static void Main(string[] args)
         {
-            try
-            {
-                AppDomain.CurrentDomain.FirstChanceException += (sender, eventArgs) =>
-                {
-                    Console.WriteLine(eventArgs.Exception.ToString());
-                };
-                CreateHostBuilder(args).Build().Run();
-            }
-            catch (Exception ex)
-            {
-                Log.Fatal(ex.ToString());
-            }
-            finally
-            {
-                Log.CloseAndFlush();
-            }
+            CreateHostBuilder(args).Build().Run();
         }
 
         private static IConfiguration CreateConfiguration(string[] args)
@@ -114,7 +97,7 @@ namespace Server
                     services.AddSingleton<IRoomInfoRepository, RoomInfoRepository>();
                     services.AddSingleton<IItemRepository, ItemRepository>();
                     services.AddSingleton<IHabboProfileRepository, HabboProfileRepository>();
-                    services.AddSingleton<IItemDataRepository<ItemData, ushort>, ItemDataRepository>();
+                    services.AddSingleton<IItemDataRepository<IItemData, ushort>, ItemDataRepository>();
                     services.AddSingleton<IItemRepository, ItemRepository>();
 
                     services.AddTransient(typeof(IBaseCache<>), typeof(BaseCache<>));

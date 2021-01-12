@@ -36,9 +36,9 @@ namespace Server.Hotel.Rooms.Info
             if (roomInfo is null)
                 return roomInfo;
 
-            var owner = await habboProfileRepository.GetAsync(roomInfo.OwnerId);
-            if (owner is IHabboProfile)
-                roomInfo.SetOwner(owner);
+            //var owner = await habboProfileRepository.GetAsync(roomInfo.OwnerId);
+            //if (owner is IHabboProfile)
+            //    roomInfo.SetOwner(owner);
 
             return roomInfo;
         }

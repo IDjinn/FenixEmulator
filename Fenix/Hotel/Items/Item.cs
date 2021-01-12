@@ -11,18 +11,29 @@ using Server.Hotel.Rooms.Info;
 
 namespace Server.Hotel.Items
 {
+    [Table("items")]
     public class Item : IItem
     {
         protected readonly object locker = new object();
 
         public ulong Id { get; init; }
-        public uint OwnerId { get; init; }
-        public uint? RoomInfoId { get; init; }
-        public uint ItemDataId { get; init; }
-        public ItemData ItemData { get; set; }
 
-        public virtual HabboProfile? Owner { get; set; }
-        public virtual RoomInfo? RoomInfo { get; set; }
+        public uint OwnerId { get; init; }
+        public uint ItemDataId { get; init; }
+        public uint? RoomInfoId { get; init; }
+
+        [NotMapped]
+
+        public IHabboProfile? Owner { get; private set; }
+
+        [NotMapped]
+
+        public IItemData? ItemData { get; private set; }
+
+        [NotMapped]
+
+        public IRoomInfo? RoomInfo { get; private set; }
+
         [NotMapped]
         public IRoom? Room { get; private set; }
         [NotMapped]
@@ -38,11 +49,25 @@ namespace Server.Hotel.Items
                 lock (locker) updateNeeded = value;
             }
         }
-
         public virtual ValueTask Update(params object[] args)
         {
             return default;
         }
 
+
+        public void SetOwner(IHabboProfile? owner)
+        {
+            Owner = owner;
+        }
+
+        public void SetItemData(IItemData? itemData)
+        {
+            ItemData = itemData;
+        }
+
+        public void SetRoomInfo(IRoomInfo? roomInfo)
+        {
+            RoomInfo = roomInfo;
+        }
     }
 }

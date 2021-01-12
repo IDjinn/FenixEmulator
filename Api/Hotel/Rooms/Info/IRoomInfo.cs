@@ -10,12 +10,11 @@ namespace Api.Hotel.Rooms.Info
         public byte Category { get; init; }
         public string? Description { get; init; }
         public uint OwnerId { get; init; }
-        public IHabboProfile? Owner { get; }
+        //public IHabboProfile? Owner { get; }
         public DoorAcessType DoorAcess { get; init; }
         public string? Password { get; init; }
         public ushort Rating { get; init; }
 
 
-        public void SetOwner(IHabboProfile? owner);
     }
 }

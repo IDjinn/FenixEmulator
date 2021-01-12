@@ -26,7 +26,6 @@ namespace Server.Database
         protected internal virtual void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
-            //optionsBuilder.UseMySql(configuration.GetConnectionString("Habbo"));
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

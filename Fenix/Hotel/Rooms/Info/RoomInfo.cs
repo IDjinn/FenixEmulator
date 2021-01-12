@@ -4,10 +4,12 @@ using Api.Hotel.Habbos.Profile;
 using Api.Hotel.Rooms.Info;
 using Api.Networking.Messages.Outgoing;
 
+using Server.Hotel.Habbos.Profile;
 using Server.Networking.Messages.Outgoing;
 
 namespace Server.Hotel.Rooms.Info
 {
+    [Table("rooms_info")]
     public record RoomInfo : IRoomInfo
     {
         public uint Id { get; init; }
@@ -15,16 +17,11 @@ namespace Server.Hotel.Rooms.Info
         public byte Category { get; init; }
         public string? Description { get; init; }
         public uint OwnerId { get; init; }
-        [NotMapped]
-        public IHabboProfile? Owner { get; private set; }
         public DoorAcessType DoorAcess { get; init; }
         public string? Password { get; init; }
         public ushort Rating { get; init; }
 
-        public void SetOwner(IHabboProfile? owner)
-        {
-            Owner = owner;
-        }
+        public virtual HabboProfile? Owner { get; set; }
 
         public IOutgoingPacket Serializable(IOutgoingPacket? packet = null)
         {

@@ -25,7 +25,7 @@ namespace Server.Util.Cache
             .SetSlidingExpiration(TimeSpan.FromMinutes(30));
         }
 
-        public async ValueTask<TItem?> GetOrCreateAsync(object key, Func<ValueTask<TItem>> createItem, MemoryCacheEntryOptions? options = null)
+        public async ValueTask<TItem?> GetOrCreateAsync(object key, Func<ValueTask<TItem?>> createItem, MemoryCacheEntryOptions? options = null)
         {
             if (!cache.TryGetValue(key, out TItem? cacheEntry))
             {
@@ -39,10 +39,6 @@ namespace Server.Util.Cache
                         cache.Set(key, cacheEntry, options ?? defaultCacheEntryOptions);
                     }
                 }
-                catch (Exception e)
-                {
-
-                }
                 finally
                 {
                     @lock.Release();
@@ -51,7 +47,7 @@ namespace Server.Util.Cache
             return cacheEntry;
         }
 
-        public async ValueTask<TItem?> GetAsyncOrCreate(object key, Func<TItem> createItem, MemoryCacheEntryOptions? options = null)
+        public async ValueTask<TItem?> GetAsyncOrCreate(object key, Func<TItem?> createItem, MemoryCacheEntryOptions? options = null)
         {
             if (!cache.TryGetValue(key, out TItem? cacheEntry))
             {
@@ -64,10 +60,6 @@ namespace Server.Util.Cache
                         cacheEntry = createItem();
                         cache.Set(key, cacheEntry, options ?? defaultCacheEntryOptions);
                     }
-                }
-                catch (Exception e)
-                {
-
                 }
                 finally
                 {

@@ -35,7 +35,25 @@ namespace Server.Hotel.Items
 
         public async ValueTask<IItem?> GetAsync(ulong key)
         {
-            return await itemsCache.GetOrCreateAsync(key, async () => await databaseContext.Items.FindAsync(key));
+            return await itemsCache.GetOrCreateAsync(key, async () =>
+            {
+                var item = await databaseContext.Items.FindAsync(key);
+                if (item is null)
+                    return item;
+
+                var owner = await habboProfileRepository.GetAsync(item.OwnerId);
+                if (owner is not null)
+                    item.SetOwner(owner);
+
+                if (item.RoomInfoId is uint roomId)
+                {
+                    var roomInfo = await roomInfoRepository.GetAsync(roomId);
+                    if (roomInfo is not null)
+                        item.SetRoomInfo(roomInfo);
+                }
+
+                return item;
+            });
         }
 
         public ValueTask<List<IItem>> GetAllAsync()

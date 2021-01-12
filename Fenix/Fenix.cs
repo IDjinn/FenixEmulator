@@ -50,7 +50,7 @@ namespace Server
             await itemManager.Init();
            var item = await itemRepository.GetAsync(1);
             // await itemManager.Init();
-            logger.LogInformation($"Started....");
+            logger.LogInformation($"Started.... {item}");
         }
 
         public async Task StopAsync(CancellationToken cancellationToken)

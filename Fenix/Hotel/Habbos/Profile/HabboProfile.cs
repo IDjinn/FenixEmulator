@@ -5,6 +5,7 @@ using Api.Hotel.Habbos.Profile;
 
 namespace Server.Hotel.Habbos.Profile
 {
+    [Table("users_profiles")]
     public sealed record HabboProfile : IHabboProfile
     {
         private readonly object locker = new object();

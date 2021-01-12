@@ -10,14 +10,19 @@ namespace Api.Hotel.Items
     {
         public ulong Id { get; init; }
         public uint OwnerId { get; init; }
+        public uint ItemDataId { get; init; }
         public uint? RoomInfoId { get; init; }
-       // public uint ItemDataId { get; init; }
 
-        //public IHabboProfile? Owner { get; set; }
-        //public IRoomInfo? RoomInfo { get; set; }
+        public IHabboProfile? Owner { get; }
+        public IItemData? ItemData { get; }
+        public IRoomInfo? RoomInfo { get; }
+
         public IRoom? Room { get; }
         public bool InRoom => Room is IRoom;
 
         public ValueTask Update(params object[] args);
+        public void SetOwner(IHabboProfile? owner);
+        public void SetItemData(IItemData? itemData);
+        public void SetRoomInfo(IRoomInfo? roomInfo);
     }
 }
