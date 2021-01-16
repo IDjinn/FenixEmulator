@@ -23,7 +23,6 @@ namespace Server.Hotel.Habbos.Profile
         public String? MachineId { get; private set; }
         public string SSO { get; }
 
-        [NotMapped]
         private uint credits { get; set; }
 
         public uint Credits

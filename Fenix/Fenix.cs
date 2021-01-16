@@ -29,15 +29,13 @@ namespace Server
         private ISocketManager socketManager { get; init; }
         private IItemManager itemManager { get; init; }
         private ILogger<Fenix> logger { get; init; }
-        private IItemRepository itemRepository { get; init; }
 
-        public Fenix(ILogger<Fenix> logger, IItemManager itemManager, ISocketManager socketManager, IItemRepository itemRepository)
+        public Fenix(ILogger<Fenix> logger, IItemManager itemManager, ISocketManager socketManager, IPacketManager packetManager)
         {
             this.logger = logger;
             logger.LogInformation(LOGO);
             logger.LogInformation($"\n\n\t\t\tVersion: {MAJOR}.{MINOR}.{PATCH}{(!string.IsNullOrWhiteSpace(PREVIEW) ? $"-{PREVIEW}" : "")}\n\n");
 
-            this.itemRepository = itemRepository;
             this.itemManager = itemManager;
             this.socketManager = socketManager;
         }

@@ -117,6 +117,8 @@ namespace Server.Networking
         private void RegisterIncoming<T>(ushort id) where T : IIncomingEvent
         {
             incomingEvents.Add(id, ActivatorUtilities.CreateInstance<T>(provider));
+
+            logger.LogDebug($"ID: {id} registred as '{incomingEvents.GetValueOrDefault(id)!}'.");
         }
     }
 }
